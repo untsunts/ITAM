@@ -1,0 +1,30 @@
+ Nombre del problema                      hs050  
+ Numero de variables                       5 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             7.516000000000000e+03 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.29e+03 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     2.76727261e+02     7.99e-15      3.74e+02    
+    2     5.77316597e+01     0.00e+00      1.12e+02    
+    3     1.25429992e+01     2.18e-15      3.42e+01    
+    4     2.77977708e+00     1.26e-15      1.07e+01    
+    5     5.28667344e-01     8.88e-16      3.35e+00    
+    6     4.14667507e-02     8.88e-16      8.01e-01    
+    7     7.87084017e-05     0.00e+00      3.43e-02    
+    8     6.38372398e-13     0.00e+00      3.09e-06    
+
+
+ Minimizador local del modelo: 
+ 	   9.99999369e-01 
+ 	   9.99999699e-01 
+ 	   1.00000041e+00 
+ 	   9.99999826e-01 
+ 	   9.99999979e-01 
+
+ tiempo de programa :   1.92e-03

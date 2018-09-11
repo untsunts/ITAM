@@ -1,0 +1,697 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage[spanish]{babel}
+\textwidth     =  7.0in
+\textheight    =  9.0in
+\oddsidemargin = -0.2in
+\topmargin     = -0.5 in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath, amsthm, amssymb, latexsym}
+\newtheorem{lma}{Lema}
+\newtheorem{thm}{Teorema}
+\usepackage{mathtools}
+\usepackage{framed}
+\usepackage{setspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\ul}{\underline}
+
+%\input{header}
+%
+\newcommand{\noi}{\noindent}
+\newcommand{\pa}{\partial}
+%
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+%
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+%
+\newcommand{\non}{\nonumber}
+%
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+%
+\newcommand{\bee}{\begin{enumerate}}
+\newcommand{\eee}{\end{enumerate}}
+%
+\newcommand{\bed}{\begin{description}}
+\newcommand{\edd}{\end{description}}
+%
+\newcommand{\bec}{\begin{center}}
+\newcommand{\edc}{\end{center}}
+%
+\renewcommand{\thefootnote}{\roman{footnote}}
+%
+\begin{document}
+\title{Gradiente conjugado}
+\author{An\'alisis aplicado. Proyecto.}
+\date{10 de marzo, 2015}
+%\maketitle
+
+\centerline{\large \bf An\'alisis aplicado.}
+\centerline{\large \bf Gradiente conjugado y proyecto.}
+\centerline{\bf 10 de marzo, 2015. Guillermo Santiago Novoa P\'erez}
+
+\subsection*{Gradiente conjugado}
+El m\'etodo de gradiente conjugado (GC) tiene propiedades matem\'aticas y computacionales que lo convierten en una herramienta muy vers\'atil para resolver problemas  en una amplia variedad de aplicaciones. 
+
+La principal motivaci\'on consiste en dise\~nar un m\'etodo para resolver eficientemente el problema cuadr\'atico
+\bea  \label{opt}
+  \stackrel{\mbox{minimizar}}{ {}_x } & & \raisebox{1.0ex}{$\displaystyle q(x) = \frac{1}{2} x^TAx -b^Tx$,}
+\eea
+en donde $A$ es una matriz sim\'etrica positiva definida de $n \times n$. El problema anterior es equivalente a resolver el  sistema de ecuaciones lineales $Ax = b$. Una de las principales virtudes del m\'etodo de GC es que alivia los conocidos inconvenientes del m\'etodo de m\'aximo descenso. En aritm\'etica finita,  GC parte de una aproximaci\'on inicial y termina con la soluci\'on exacta en no m\'as de $n$ iteraciones; en este sentido se le considera como un m\'etodo directo. En  aritm\'etica finita, debido a la acumulaci\'on de errores por redondeo, el m\'etodo podr\'{\i}a no terminar en $n$ pasos y por lo tanto se le considera un m\'etodo iterativo.
+
+ Los m\'etodos iterativos constituyen una alternativa muy atractiva con respecto a los m\'etodos directos. Espec\'{\i}ficamente, cuando se trata de resolver una sucesi\'on finita de sistemas cercanamente relacionados 
+\bea
+   A_j x = b_j, \quad j=1, \quad A_{j+1} \approx A_j, \quad j=1,\ldots, N-1 \label{sucesion}
+\eea
+ $x_j^*$, la soluci\'on del sistema $A_j x = b_j$, se puede utilizar como punto inicial para resolver el sistema
+$A_{j+1} x = b_{j+1}$. En estos casos la  soluci\'on de cada sistema se alcanza en unas cuantas iteraciones.
+
+Si cada sistema de la  sucesi\'on (\ref{sucesion}) se resolviera con el m\'etodo de Cholesky se requerir\'{\i}an  ${\cal O}(Nn^3)$ operaciones para resolver los $N$ sistemas.
+
+Antes de iniciar la construcci\'on de GC necesitamos algunas definiciones.\\
+\begin{enumerate}
+ \item Al vector  $r(x) = Ax -b$ lo denotamos como el {\em residuo} en $x$.  \footnote{Notar que $\nabla q(x) = Ax -b=  r(x)$. En particular, en $x = x_k$, tendremos $r_k = \mathbf{A}x_k -b$.} \\
+ \item Los elementos de un conjunto ${\cal D} = \{d_0, d_1, \ldots, d_k \}$ de vectores en $\real^n$ son $A$-ortogonales si 
+       \[
+           d_i^TAd_j = 0, \quad i\ne j
+       \]
+ \end{enumerate} 
+
+Consideremos al vector $x_0$ una aproximaci\'on inicial a la soluci\'on $x^*$. Entonces es inmediato observar que  $r(x_0)$ es  una direcci\'on de descenso para el problema de optimizaci\'on (\ref{opt}); por lo tanto podemos obtener el iterando \\
+\[
+   x_1 = x_0 + \alpha_0 d_0,
+\] \\
+en donde $d_0 = -r_0$; el escalar $\alpha_0$ se puede obtener resolviendo el problema unidimensional
+\beas
+  \stackrel{ \mbox{minimizar}} { {}_\alpha  } & & \raisebox{1.0ex}{$q(x_0 + \alpha d_0),$}
+\eeas \\
+es decir
+\[
+    \nabla q(x_0 + \alpha_0 d_0)^Td_0 =   r_1^T d_0  = 0, \quad  r_1^Tr_0 = 0
+\] \\
+y por lo tanto
+\[
+   \alpha_0 =  \frac{ -\nabla q(x_0)^T d_0 }{d_0^T A d_0} =- \frac{r_0^Td_0}{d_0^TAd_0}
+\] \\
+
+El iterando $x_2$ se calcula con la direcci\'on 
+\[
+  d_1
+ = -r_1 + \beta_1 d_0  ,\\  \quad \beta_1 =  \frac{r_1^TAd_0}{d_0^TAd_0}  \quad \footnote{ Observar que $d_1$ 
+est\'a compuesta por la direcci\'on de m\'aximo descenso y una fracci\'on de la direcci\'on previa,  $d_0$. }
+\]\\
+obtenida a partir de $-r_1$ y $d_0$ mediante $A$-ortogonalizaci\'on de Gram-Schmidt. 
+\[
+   x_2 = x_1 + \alpha_1 d_1, 
+\] \\
+en donde $\alpha_1$ se obtiene resolviendo 
+\beas
+  \stackrel{ \mbox{minimizar}} { {}_\alpha  } & & \raisebox{1.0ex}{$q(x_1 + \alpha d_1),$}
+\eeas \\
+es decir
+\[
+   \nabla q(x_1 + \alpha_1 d_1)^Td_1 =  r_2^Td_1 = 0
+\] \\
+y por lo tanto
+\[
+  \alpha_1 = \frac{ -\nabla q(x_1)^T d_1 }{d_1^T A d_1} = - \frac{r_1^Td_1}{d_1^TAd_1}
+\] \\
+
+Vamos a probar que $r_2$ tambi\'en es ortogonal a $d_0$; de la definici\'on del residuo
+\[
+    r_2 = Ax_2 - b = A(x_1 + \alpha_1d_1) - b  = r_1 + \alpha_1 Ad_1
+\]\\
+premultiplicando por $d_0$ tenemos
+\[
+   d_0^Tr_2 = d_0^Tr_1 + \alpha_1 d_0^T Ad_1 = r_0^Tr_1 + \alpha_1 d_0^T Ad_1 = 0.
+\]\\
+
+Como las direcciones $d_i$ son construidas mediante $A-$ortogonalizaci\'on de Gram-Schmidt, $d_0^TAd_1 = 0$ , adem\'as $r_0^Tr1 = 0$ . Por lo tanto $r_2$ es ortogonal a $d_0$ tambi\'en.  Nos queda por investigar el producto $r_2^Tr_1$ :
+\[
+   r_2^Td_1 = 0 = r_2^T(- r_1 + \beta_1d_0) = - r_2^Tr_1 + r_2^Td_0 
+\] \\
+sabemos que $r_2^Td_1 = 0$ y que $r_2^T d_0 = 0$, por lo tanto $r_2^Tr_1 = 0$. \\
+
+En conclusi\'on tenemos que el conjunto $\{r_0, r_1, r_2 \}$ es ortogonal y por lo tanto podemos construir un vector $A$-ortogonal
+\[
+   d_2 = - r_2 + \frac{r_2^TAd_0}{d_0^TAd_0} d_0 + \beta_2 d_1
+\]\\ 
+
+Utilizando la expresi\'on 
+\[
+   x_1 = x_0 + \alpha_0 d_0
+\]
+es f\'acil probar que el producto $r_2^TAd_0$ se anula. 
+Premultiplicando la expresi\'on anterior por $A$ tenemos
+\begin{align*}
+    x_1 &= x_0 + \alpha_0 d_0 \\
+    \implies A x_1 &=  Ax_0 + \alpha_0 A d_0 \\
+\implies ( Ax_1 - b)- (Ax_0 - b) &=  \alpha_0 Ad_0 \\
+\implies r_1 - r_0 &=  \alpha_0  Ad_0 \quad ^*\\
+\implies r_2^T(r_1 - r_0) &= \alpha_0 r_2^T Ad_0 \\
+\implies r_2^T Ad_0 &= 0 
+\end{align*}
+*\footnote{ {\bf Nota :} De este paso se obtiene la forma recursiva para $r_i$ }
+
+Por lo tanto
+\[
+   d_2 = -r_2 + \beta_2 d_1, \quad  \beta_2 = \frac{r_2^TAd_1}{d_1^TAd_1}.
+\]
+En resumen, tenemos que los residuos $r_0,r_1,r_2$ forman un conjunto ortogonal, y que las direcciones $d_0, d_1, d_2$ forman un conjunto $A$-ortogonal. Un argumento inductivo evidente permite formular una versi\'on preliminar del algoritmo de GC
+
+%%%%%%%%
+\subsection*{Proyecto}
+%%%%%%%%
+\noindent Se empezar\'a el proyecto terminando de probar el paso inductivo en la construcci\'on del m\'etodo de GC. Para ello, se tiene que demostrar que para toda direcci\'on $d_k$\footnote{la direcci\'on es obtenida por medio de la $A-$ortogonalizaci\'on de los negativos de los residuos $(-r_i)$ utilizando el m\'etodo de Gram-Schmidt, es decir, $\beta_i$ es la $A-$proyecci\'on de $-r_{i+1}$ sobre $d_i$} del m\'etodo del GC, su obtenci\'on depende \'unicamente de la direcci\'on anterior. Ser\'a importante notar que para probar que $d_{k+1}$ solamente depende de la direcci\'on anterior $(d_{k})$ , s\'olo hace falta probar que el $k-$\'esimo residuo $(r_k)$ es $A-$ortogonal a toda direcci\'on que no sea la inmediatamente anterior ($d_k$).
+ \\
+ 
+ En otras palabras : 
+$$ r_i\perp_A d_j     \quad \forall j \in \{0,1, ...  , i-2 \}
+$$\\
+
+Nuestro {\bf caso base} ya est\'a dado anteriormente \footnote{$r_0, r_1, r_2, d_0, d_1, d_2$}, supongamos que para $k$ se cumple lo siguiente: \\
+\\
+{\tt Hip\'otesis de inducci\'on}
+\bea
+r_k \perp d_i \quad \forall i \in \{0,1, ..., k-1\}\label{rkdi}  \\
+r_k \perp r_i \quad \forall i \in \{0,1, ..., k-1\}\label{rkri} \\
+r_k \perp_A d_i \quad \forall i \in \{0,1, ..., k-2\}\label{rkAdi}
+\eea \\
+Se separar\'a a la prueba en 3 partes:
+\begin{enumerate}
+\item \quad \ \ \ PD:  $r_{k+1}^T d_i= 0$, \quad $\forall i \in \{0,1, ...,k\}$ 
+\item \quad \ \ \ PD: $r_{k+1}^T r_i= 0$, \quad $\forall i \in \{0,1, ...,k\} $
+\item \quad \ \ \ PD: $r_{k+1}^T A d_i= 0$, \quad $\forall i \in \{0,1, ...,k-1\}$ \\
+\end{enumerate}
+
+\noindent De la definici\'on de residuo se tiene que: \\
+\begin{align*}
+r_{k+1} =\ &Ax_{k+1} - b \\ =\ &A(x_k + \alpha_kd_k)-b \\ =\ &r_k + \alpha_kAd_k \\
+\text{Premultiplicando por  }\ \    &d_i^T \quad i \in \{0,1, ..., k-1 \}\\
+\implies d_i^Tr_{k+1} = \ &d_i^Tr_{k} - \alpha_kd_i^TAd_k\\
+\text{como, por construcci\'on,} &\quad d_i\perp_A d_j \quad \forall i \ne j \\
+\text{ y, por (\ref{rkdi}) }& \\ 
+\quad \alpha_kd_i^tAd_k=0  \quad d_i^Tr_k0=\ &0 \quad \forall i \in \{0,1, ..., k-1 \}  \\
+\implies  d_i^Tr_{k+1} =\ &0 ;\\
+\end{align*}
+\noindent Es decir, $r_{k+1}$ es ortogonal a toda direcci\'on anterior a la $k-$\'esima direcci\'on. \\
+\\
+
+Para probar que $r_{k+1}$ es ortogonal a la $k-$\'esima direcci\'on, s\'olo hace falta fijarse en la forma en la que se obtiene $\alpha_k$. 
+Como $x_{k+1} = x_k + \alpha_k d_k$ con $\alpha_k$ obtenida mediante b\'usqueda lineal exacta, se tiene que:
+	$$\nabla f(x_k + \alpha_k d_k)^Td_k = \nabla f(x_{x+1})^Td_k = r_{k+1}^Td_k = 0 = d_k^Tr_{k+1}$$ 
+	$$\therefore d_i^Tr_{k+1} = 0 \quad \forall i \in \{0,1, ..., k \}\\ \qed_1$$
+	
+	%%%%%
+({\it Con esto se acaba de dar una prueba de que $r_{k+1}\perp d_i \forall i \in \{0,1, ..., k\}$})	\\ \\
+Para la segunda parte de la prueba recordemos la forma que tienen las direcci\'ones anteriores: $$d_i = -r_i +\beta_{i}d_{i-1} \quad \forall i \in \{1, 2, ..., k\}$$
+como sabemos que $d_i^Tr_{k+1}= 0$ , sustituyamos $d_i$ por la expresi\'on anterior :
+\beas
+0=r_{k+1}^Td_i\stackrel{(\ref{rkAdi})}{=} r_{k+1}^T (-r_i + \beta_{i}d_{i-1} ) &= r_{k+1}^Tr_i + \beta_{i}r_{k+1}^Td_{i-1}\\
+\text{por el resultado anterior}\quad  r_{k+1}^Td_i = 0 &\implies \beta_{i}r_{k+1}^Td_{i-1}= 0 \\
+\therefore r_{k+1}^Tr_i &= 0 \quad \forall i \in \{1, 2, ..., k \} \\
+\text{ adem\'as, tenemos que}  \quad -r_0 &= d_0 \& r_{k+1}^Td_0 = 0 \\
+\therefore r_{k+1}^Tr_i &= 0 \forall i \in \{0,1, ...,k\}\quad  \qed_2
+\eeas 
+({\it Con esto se acaba de dar una prueba de que $r_{k+1}\perp r_i \forall i \in \{0,1, ..., k\}$})	\\ \\
+
+	%%%%%
+Para terminar la prueba ser\'a necesario usar una f\'ormula recursiva para el residuo. Esto es f\'acil de lograr si se recuerda el paso tomado anteriormente: 
+\begin{align*}
+    x_{i+1} &= x_i + \alpha_i d_i \\
+    \implies A x_{i+1} &=  Ax_i + \alpha_i A d_i \\
+\implies ( Ax_{i+1} - b) &= (Ax_i - b) + \alpha_i Ad_i \\
+\implies r_{i+1} &= r_i +  \alpha_i  Ad_i \\
+\end{align*}
+	
+Con esa f\'ormula la prueba casi est\'a completa. \\
+Premultiplicamos a $r_{i+1}$ por $r_{k+1}$ con $i \in \{0,1, ...,k-1\}$ y, por los resultados anteriores, termina la prueba. 
+\beas
+r_{k+1}^Tr_{i} = r_{k+1}^Tr_i + \alpha_ir_{k+1}^TAd_i \quad \forall i \in \{0,1, ... ,k-1 \} \\
+\implies r_{k+1}^TAd_i = 0 \quad \quad \forall i \in \{0, 1, ..., k-1\}\\ \quad &\qed_3 
+\eeas \\
+
+{\it Con la prueba anterior finalizada se pasar\'a a ver cualidades particulares del m\'etodo del Gradiente Conjugado, as\'i como su forma :}
+
+%%%%%
+\begin{enumerate}
+
+
+
+ \item  M\'etodo de GC
+
+\begin{quotation}
+\begin{description}
+ \item Sea $x_0$ una aproximaci\'on inicial, $d_0 \leftarrow r_0$, \quad $k \leftarrow 0$
+ \item Repetir mientras $r_k \ne 0$
+  \begin{description}
+   \item  $\displaystyle \alpha_k    \leftarrow  -\frac{r_k^Td_k}{d_k^TAd_k} $
+   \item  $x_{k+1}     \leftarrow  x_k + \alpha_k d_k         $    
+   \item  $r_{k+1}     \leftarrow  r_k - \alpha_k Ad_k        $    
+   \item  $\displaystyle \beta_{k+1} \leftarrow  \frac{r_{k+1}^TAd_k}{d_k^TAd_k} $ 
+   \item  $d_{k+1}     \leftarrow  -r_{k+1} + \beta_{k+1}d_k        $
+   \item  $k           \leftarrow  k+1 $\\
+  \end{description}
+\end{description}
+\end{quotation}
+\noindent Sin embargo, existe otra forma en la que se puede mejorar al m\'etodo en cuanto a su c\'alculo computacional simplemente notando ciertas relaciones algebr\'aicas. \\
+\begin{itemize}
+\item $-r_k^Td_k = r_k^Tr_k$\\
+\beas
+d_k &= -r_k + \beta_kd_{k-1}\\
+\implies r_k^Td_k &= -r_k^Tr_k + \beta_kr_k^Td_{k-1}\\
+\text{pero como } &r_k\perp d_{k-1}\\
+\implies r_k^Td_k &= -r_k^Tr_k;\\
+\therefore \alpha_k &\longleftarrow \frac{r_k^Tr_k}{d_k^TAd_k}\\
+\eeas
+\item  $\frac{r_{k+1}^TAp_k}{p_k^TAp_k} = \frac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k}$
+\beas
+\quad  \beta_{k+1} = &\frac{r_{k+1}^TAd_k}{p_k^TAd_k}  \\ 
+	 \text{(Sustituyendo $Ad_k$ de la f\'ormula recursiva de} \ r_{k+1})& \\ 
+	 = &\frac{r_{k+1}^T\left[\frac{r_{k+1}-r_k}{\alpha_k}\right]}{p_k^T\left[\frac{r_{k+1}-r_k}{\alpha_k}\right]} \\
+	 = &\frac{r_{k+1}^Tr_{k+1} - r_{k+1}^Tr_k}{d_k^Tr_{k+1} - d_k^Tr_k} \\ 
+	  =  &\frac{r_{k+1}^Tr_{k+1} - r_{k+1}^Tr_k}{ - d_k^Tr_k} \\ 
+	  = &\frac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k} + \frac{r_{k+1}^Tr_k}{d_k^Tr_k} \\ 
+	  \text{ pero acabamos de probar que   } r_{k+1} \perp r_i \quad &\forall i \in \{0, 1, ..., k\} \\
+	   \therefore \beta_{k+1} \longleftarrow   &\frac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k} \\
+\eeas
+\end{itemize}
+
+Por lo tanto, el m\'etodo de GC queda de la siguiente forma: 
+ \item Algoritmo computacional de GC
+\begin{quotation}
+\begin{description}
+ \item Sea $x_0$ una aproximaci\'on inicial, $d_0 \leftarrow -r_0$, \quad $k \leftarrow 0$
+ \item Repetir mientras $r_k \ne 0$
+  \begin{description}
+    \item $\displaystyle \alpha_k \leftarrow \frac{r_k^Tr_k}{d_k^TAd_k}$
+    \item  $x_{k+1} \leftarrow x_k + \alpha_k d_k$
+    \item $r_{k+1} \leftarrow r_k - \alpha_k Ad_k$
+    \item $\displaystyle \beta_{k+1} \leftarrow \frac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k}$
+    \item $d_{k+1} \leftarrow- r_{k+1} + \beta_{k+1}d_k$
+    \item $k \leftarrow k+1$\\
+  \end{description}
+\end{description}
+\end{quotation} 
+ 	%%%%%
+ 
+ \item A continuaci\'on estudiaremos algunas propiedades del m\'etodo de GC que aparecen en el libro de Nocedal \& Wright ({\it Teoremas 5.1-5.5} ) \\
+ 
+ %begin{itemize}
+ {\bf Teorema 5.1 : } Para cualquier aproximaci\'on inicial ${\it x_0} \in \mathbb{R}^n$ , la secuencia generada por el algoritmo del GC $( \{x_k \}_{k=1}^{n-1})$ converge a la soluci\'on del sistema lineal $ Ax = b $ en a lo m\'as n iteraciones $(x_n = x^*)$ . \\
+% \end{itemize}
+\noindent Para poder probar el teorema 5.1 ser\'a \'util probar antes el siguiente lema.\\
+
+ {\tt Lema 5.1 :} Si $ A \in \mathbb{R}^{nxn}$ es una matriz positiva definida y el conjunto de vectores $\{v_0,v_1,...v_{k-1}\}$ es $A-$ortogonal $(\{v_i\} \ne 0)$, entonces esos vectores son {\it L.I.}.
+ \beas
+ \text{ Supongamos que } 0 = \ &\sum_{i = 0}^{n-1} \alpha_i v_i \\
+ \text{ Como  } v_i \ne 0 \quad &\forall i \in \{0 ,1, ... ,k-1\} \\
+ \text{ y A es s.p.d, } \ \ \ &\text{ premultiplicamos por } v_iA \\
+ \implies 0 =\ &v_l^TA \sum_{i = 0}^{n-1} \alpha_i v_i \\ \\ 
+			=\ &\sum_{i = 0}^{n-1} \alpha_i  v_l^TAv_i \\ \\
+			=\ &\alpha_l v_l^TAv_l 
+ \eeas
+ \\
+ \noindent Pero como A es s.p.d. , la \'unica manera en que la ecuaci\'on anterior est\'e balanceada es si $\alpha_l = 0$. N\'otese que el procedimiento anterior es v\'alido para cualquier $l \in \{0, 1, ..., k-1\}$, $\therefore \{v_0, v_1, ..., v_{k-1}\}$ son $L.I. \quad \qed_{lema_{5.1}}$ . \\
+
+ \noindent Volviendo al {\bf Teorema 5.1}, tenemos que $d_i\perp_Ad_j \ \forall  i \ne j$ con A una matriz s.p.d. Por el lema anterior, el conjunto de direcciones $\{d_i\}_{i=0}^{n-1}$ es $L.I.$ y por lo tanto, forma una base en $\mathbb{R}^n$. Esto nos deja con que para todo vector $z  \in \ \mathbb{R}^n \  \exists  \  \{ \tau_j \}_{j=0}^{n-1} \ $  tal que $z$ es combinaci\'on lineal del conjunto de direcciones con los coeficientes ( las proyecciones en cada direcci\'on) definidos por $\tau_i$. \\
+ En particular, esto pasa para el vector $(x^*-x_0)$:
+$$(x^*-x_0) = \tau_0d_0 + \tau_1d_1 + ... + \tau_{n-1}d_{n-1}$$\\ \\
+\noindent Para lograr ver que $x_n$ y $x^*$ son los mismos, primero tendr\'emos que ver a $x_n$ de la siguiente forma: 
+\beas
+x_n =\ &x_{n-1} + \alpha_{n-1}d_{n-1} \\ =\ & (x_{n-2} + \alpha_{n-2}d_{n-2}) + \alpha_{n-1}d_{n-1}\\
+=\ &  \\&...\\ \\ =\ &x_0 + \alpha_0d_0 + \alpha_1d_1 + ... + \alpha_{n-1}d_{n-1}\\  
+\therefore (x_n - x_0) =\ & \alpha_0d_0 + \alpha_1d_1 + ... +\alpha_{n-1}d_{n-1} \\
+\eeas
+  Esto quiere decir que el vector $( x_n - x_0)$ tiene su propia caracterizaci\'on en el espacio de direcciones con los coeficientes $\{\alpha_j\}_{j=0}^{n-1}$. Para nuestro paso siguiente (que ser\'a comparar $\alpha 's$ con $\tau 's$ tendremos que calcular la forma expl\'icita de las $\tau 's$.
+ Premultiplicando $(x^* - x_0)$ por $d_j^TA$ con $j \in \{0, 1, ... k-1\}$:
+ \beas
+ d_j^TA(x^* - x_0) =\ &\tau_0d_j^TAd_0 + \tau_1d_j^TAd_1 + ... + \tau_{n-1}d_j^TAd_{n-1}\\
+ =\ &\tau_jd_j^TAd_j\\ \\
+ \implies \tau_j \stackrel{*}{=}\  &\frac{d_j^TA(x^* - x_0)}{d_j^TAd_j}; \quad \ \ \  \quad
+ \text{ \tt{ *: $d_j^TAD_j \ge 0 $}} \\
+ \eeas
+Sea $k \in \{0, 1, ..., n-1\}$ arbitraria, entonces, por la f\'formula encontrada anteriormente, $$(x_k - x_0) =\ \alpha_0d_0 + \alpha_1d_1 + ... +\alpha_{k-1}d_{k-1}$$
+Premultiplicando por la izquierda $d_k^TA$:
+\beas
+ d_k^TA(x_k - x_0)\ =\ &\alpha_0d_k^TAd_0 + \alpha_1d_k^TAd_1 + ... + \alpha_{k-1}d_k^TAd_{k-1} = 0\\
+ \implies\ &d_k^TA(x^* - x_0) - d_k^TA(x^* - x_0) +  d_k^TA(x_k - x_0) =0\\
+ \implies  d_k^TA(x_k - x_0) =\ & d_k^TA(x^* - x_0) -  d_k^TA(x_k - x_0)\\
+ \ = &d_k^TA(x^* - x_0 - x_k + x_0)\\
+ \ = & d_k^TA(x^* - x_k)\\
+ \text{sustituyendo }& \ Ax^* =b \\
+ \ = & d_k^T(b - Ax_k)\\  
+ \ = &d_k^T(-r_k)\\ 
+\eeas 
+Juntando la forma de $\tau_j$ con el resultado anterior, podemos ver que :
+$$ \tau_k\ =\ \frac{d_k^TA(x^* - x_0)}{d_k^TAd_k}\ =\ -  \frac{r_k^Td_k}{d_k^TAd_k} \ \quad \qed_{Teo_{5.1}}$$
+ 
+ {\it Con la prueba anterior se encontr\'o que los vectores $(x_n - x_0)$ y $(x^* - x_0)$ tienen las mismas proyecciones sobre una base $L.I.$ de $\mathbb{R}^n$, \'esto, por el teorema de representaci\'on, nos permite decir que los dos vectores son el mismo en ese espacio, es decir, $x_n = x^*$.}\\ \\
+ 
+ %%%%%
+  {\bf Teorema 5.2 : } Sea $x_0$ cualquier aproximaci\'on inicial y $\{x_1, x_2, ..., x_n\}$ la secuencia generada por el algoritmo del GC, entonces se cumple lo siguiente: 
+  \begin{enumerate}
+  \item $r_k^Td_i = 0 \ \forall i \in \{0, 1, ... k-1\}$
+  \item $x_k$ es el minimizador de $f(x) \ = \ \frac{1}{2}x^TAx - b^Tx$ sobre el espacio 
+  $$ \{x |x = x_0 + gen\{d_0, d_1, ..., d_{k-1}\}\} $$
+  \end{enumerate} 
+  %%%%%
+ 
+ \noindent La primera parte de la prueba ya ha sido elaborada anteriormente (en el paso inductivo), por lo que pasaremos a la segunda parte de la prueba, es decir, que $x_k$ es el minimizador de $f(x)$. 
+Para lograr esta prueba calcularemos la forma expl\'icita que tiene el minimizador para despu\'es compararlo con $x_k$.
+Como A es s.p.d, sabemos que existe un m\'inimo en el subespacio generado por las direcciones del m\'etodo con el origen en $x_0$ . Cambiaremos de variable para facilitar la manipulaci\'on algebr\'aica. Sea $y = x - x_0$, el problema que tenemos entonces es : \\
+ \beas  
+  \stackrel{\mbox{minimizar}}{ {}_y }\ &  \raisebox{1.0ex}{$\displaystyle f(y+x_0)$}\\
+    s.a. \ y\quad = & \sum_{i=0}^{k-1}\gamma_id_i ; \\ \quad &\text{ con } \gamma_i \text{ siendo la proyecci\'on de } y \text{ sobre } d_i 
+\eeas \\
+Sea, tambi\'en, $g(\gamma) = f(y + x_0)$, como $g$ es una funci\'on continua y derivable ( en los coeficientes $\gamma_i 's $), intentaremos derivar e igualar a cero para encontrar el m\'inimo de la funci\'on que s\'olo depende de $\gamma$ . 
+\beas
+\nabla g(\gamma) =\ & \sum d_i^T\nabla f(\sum \gamma_jd_j + x_0) \\
+=\ & \sum d_i^T \left[A(\sum \gamma_jd_j+ x_0) - b\right]\\
+=\ & \sum d_i^TA\sum \gamma_jd_j + \sum d_i^T (Ax_0 - b)\\ \\
+\text{sustituyendo } \ & r_0 = Ax_0-b , \\
+\text{ y porque }\  &d_i\perp_Ad_j ;\quad \forall i \ne j , \\ 
+\text{ si } \ & \nabla g(\gamma) = 0\\ 
+\implies \gamma_j =\ & -\frac{d_jr_0}{d_j^TAd_j} 
+\eeas
+  {\it Adem\'as, como las direcciones son $A-$ortogonales, podemos cambiar la relaci\'on pasada por una m\'as conveniente :}\\
+  \beas
+  d_i^TAd_j =\  &0 \quad \forall i\ne j \\ 
+  \implies \frac{d_j^Tr_0}{d_j^TAd_j} =\ &\frac{d_j^T(Ax_0-b)}{d_j^TAd_j} \\
+  \text{ pero } \ d_j^T(Ax_0 - b) =\ &d_j^T\left[A(x_0 + \alpha_0d_0 + ... + \alpha_{j-1}d_{i-1}) - b\right]\\
+  =\ &d_j^T(Ax_j - b)\\ 
+  \implies \frac{d_j^Tr_0}{d_j^TAd_j} =\ &\frac{d_j^Tr_j}{d_j^TAd_j}\\
+  \therefore y^* = (x_k^*- x_0) =\ &\sum-\left[\frac{d_j^Tr_j}{d_j^TAd_j}\right] d_j\\
+  =\ &\sum_{j=0}^{k-1} \alpha_jd_j \\ &\quad \quad\ \ \ \ \ \ \ \ \ \ \ \ \qed_{Teo_{5.2}} .\\ \\
+  \eeas
+  
+  %%%%%
+   {\bf Teorema 5.3: } Suponiendo que el k-\'esimo iterando generado por el m\'etodo de GC no es la soluci\'on $x^*$, se cumplen las siguientes propiedades: \\
+   \begin{enumerate}
+   	\item $r_k^Tr_i$     para  $i = 0,1, . . . , k-1$.
+	\item gen$\{ r_0, r_1, . . . , r_k\} = $ gen$\{ r_0, Ar_0, . . . , A^k r_0\}$.
+	\item gen$\{ d_0, d_1, . . . , d_k\} = $ gen$\{ r_0, Ar_0, . . . , A^kr_0\}$.
+	\item $d_k^TAd_i = 0$     para  $i \in \{0,1, . . . , k-1\}$. 
+ \end{enumerate} 
+{\it y por lo tanto la secuencia $\{x_k\}$ converge a $x^*$ en a lo m\'as n pasos.} \\ \\
+ %%%%% 
+  La primera y la \'ultima parte de la prueba ya se han demostrado anteriormente (en el paso inductivo). Para la segunda y la tercera parte de la prueba se usar\'a un argumento inductivo:\\
+  \\
+  \begin{itemize}
+ \item {\tt Caso base (k = 0)}\\
+  Es trivial ver que tanto (b) como (c) se cumplen, es decir, el espacio generado por $r_0$ pertenece a s\'i mismo y tambi\'en al generado por su negativo $(d_0 = - r_0)$
+  \item {\tt Hip\'otesis de Inducci\'on : } Supongamos que tanto (b) como (c) se cumplen para $k$. P.D. se cumplen para $k+1$.
+\noindent es decir: 
+\item gen$\{ r_0, r_1, . . . , r_k\} = $ gen$\{ r_0, Ar_0, . . . , A^k r_0\}$.
+\item gen$\{ d_0, d_1, . . . , d_k\} = $ gen$\{ r_0, Ar_0, . . . , A^kr_0\}$.
+\end{itemize}
+ Por nuestras hip\'otesis $$r_k \in gen\{r_0, ..., A^kr_0\}\ \ \text{y}\ \ d_k\ \in gen\{r_0, ..., A^kr_0\} $$
+ \beas
+ r_k \in gen\{ r_0, Ar_0, . . . , A^k r_0\}  , \  Ad_k \in gen\{ Ar_0, A^2r_0, . . . , A^{k+1}r_0\}&\\
+  r_{k+1} = r_k + \alpha_kAd_k 
+  \implies  r_{k+1} \in gen\{ r_0, Ar_0, . . . , A^{k+1}r_0\}\\
+  \therefore gen\{r_0, r_1, ... r_{k+1}\} \subseteq gen\{ r_0, Ar_0, . . . , A^k r_0\}&\\ \\
+  \text{ Por nuestras hip\'otesis tambi\'en es cierto que: }\ A^kr_0 \in gen\{ d_0, d_1, . . . , d_k\}&,\\
+  \text{ premultiplicando por A, tenemos que :}\ A^{k+1}\ \in \ gen\{ Ad_0, Ad_1, . . . , Ad_k\} &\\
+  \text{ pero, por nuestra f\'ormula del residuo, tenemos que}\  \alpha_jAd_j =\ r_{j+1} - r_j &\\ \\
+  \therefore gen\{ r_0, r_1, . . . , r_k\} =  gen\{ r_0, Ar_0, . . . , A^k r_0\} .\ & \\ \\
+  \text{ Recordar que $p_{k+1}$ es generado por $r_{k+1}$ y $p_k$},\ &\\
+  \text{ Adem\'as, utilizando las hip\'otesis de inducci\'on, veamos que }\ &\\ \\
+  gen\{ d_0, d_1, . . . , d_k, d_{k+1}\} = gen\{ d_0, d_1, . . . , d_k, r_{k+1}\} \\
+  = gen\{ r_0, Ar_0, . . . , A^kr_0, r_{k+1}\} \ &\\
+  (\text{{\it por el apartado anterior }})\ = gen\{ r_0, Ar_0, . . . , A^{k+1} r_0\}\ &\\ 
+  \quad \quad \ \ \ \ \ \ \ \ \ \ \qed_{Teo_{5.3}}
+ \eeas 
+ 
+ %%%%%
+ %%%%%
+  {\bf Lema de tasa de convergencia :}
+ Para hacer la prueba del teorema 5.4 y el teorema 5.5 se necesitar\'a de un lema acerca de la tasa de convergencia del m\'etodo del GC. El resultado es un poco largo para probar pero, en s\'i, lo que hace es ver a la $k-$\'estima $x$ como el mejor polinomio de A que aproxima a $x^*$ de grado $k$. Despu\'es se demuestra que con una representaci\'on adecuada por una base adecuada, ese polinomio que minimiza la A distancia entre $x$ y $x^*$ en realidad se puede ver como un polinomio sobre los valores propios de A. Eso es importante porque quiere decir que cualquier otro polinomio de grado k (en los reales) es peor aproximaci\'on que el definido por $x_k$. Expresando, despu\'es, a $x_k$ en t\'ermino de $x_0$ y usando propiedades de ortogonalidad de la base seleccionada se llega al siguiente resultado: \\
+\beas
+||x_{k+1} - x^*||_A^2  = \underset{P_k}{\text{min}}\underset{1\le i\le n}{\text{max}} (1+\lambda_iP_k(\lambda_i))^2 ||x_0 - x^*||_A^2.\footnote{ El m\'inimo sobre $P_k$ es en el sentido de mejor aproximaci\'on a $x^*$ por un polinomio de k grados ($x_k$).}\ \ \ \footnote{El m\'aximo se refiere al valor propio que maximice $(1 + \lambda_iP_k(\lambda_i))^2)$ . }\\
+\eeas
+\\
+ %%%%%
+  \\
+  {\bf Teorema 5.4: } Si A s\'olo tiene $r $ valores propios distintos, entonces el algoritmo del GC terminar\'a en a lo m\'as r iteraciones.\\ \\
+  %%%%%
+ 
+  Sea $Q_r(\lambda)$: $$Q_r(\lambda) =\left[ \frac{(-1)^r}{\tau_1 \tau_2 . . . \tau_r}\right] (\lambda - \tau_1)(\lambda-\tau_2) ... (\lambda-\tau_r)$$
+		   
+		   Notar que $Q_r(\lambda_i) = 0$ para i = 1, . . . , r y $Q_r(0) = 1$
+		   
+		   Por lo tanto, $Q_r(\lambda) -1$ es un polinomio de grado r con ra\'iz en $\lambda=0$
+		   
+		   Sea $P_{r-1}$ de grado r-1: $$P_{r-1}(\lambda) = \frac{Q_r(\lambda)-1}{\lambda}.$$ 
+		   $$\left(\iff Q_r(\lambda) = 1 + \lambda P_{r-1}(\lambda)\right)$$ \\
+		   Por el lema sobre la tasa de convergencia anterior:
+		   $$0 \le \underset{P_k}{\text{min}} \underset{1\le i \le n}{\text{max}} [1+ \lambda_iP_{r-1}(\lambda_i)]^2 \le \underset{1\le i \le n}{\text{max}} [1+ \lambda_i\hat{P_{r-1}(\lambda_i)}]^2 = \underset{1\le i \le n}{\text{max}} Q_r(\lambda_i) = 0$$
+		   $$\text{y  } \therefore \ \ ||x_r - x^*||_A^2 = 0\  \text{  y } \  x_r = x^*$$ \\
+		   y el algoritmo de GC termina en a lo m\'as r iteraciones.\quad \ \ \  $\qed_{Teo_{5.4}} $ \\
+
+ 
+ %%%%%
+ {\bf Teorema 5.5: } Sean $\lambda_1 \le \lambda_2 \le ... \le \lambda_n$ los valores propios de A, entonces $$ ||x_{k+1} - x^*||_A^2 \le \left[\frac{\lambda_{n-k} - \lambda_1}{\lambda_{n-k} + \lambda_1}\right]^2||x_{0} - x^*||_A^2$$\\ \\
+ %%%%%
+ \noindent Algo importante del lema demostrado anteriormente es que nos deja jugar con la noci\'on de polinomio aproximado en lugar de con $x_k$. Como la cota marca que la norma-A al cuadrado del vector $x_k - x^*$ siempre es menor o igual a la {\bf mejor} aproximaci\'on en s\'olo {\bf algunos } puntos delimitados (los valores propios de A) al cuadrado por la misma norma al cuadrado pero del vector $x_0 - x^*$. \\
+  Lo que esto nos da de libertad es que s\'olo necesitamos elegir un polinomio adecuado (ya que la cota es por el mejor de ellos, cualquier otro polinomio de grado k cumple la cota), que en los valores propios de A est\'e acotado adecuadamente y podemos llegar al resultado deseado.\\
+  \\
+  Sea $q(\lambda)= 1+\lambda p(\lambda)$ un polinomio de grado $m+1$ que tiene una ra\'iz en $(\lambda_1+\lambda_{n-k})/2$ y sus otras $m$ ra\'ices en los $m$ valores propios m\'as grandes de A.
+  Notemos que , como $q(\lambda)$ es un polinomio, entonces es diferenciable . Adem\'as, $dq(\lambda)$ tiene $m$ ra\'ices (todas entre las ra\'ices de $q(\lambda)$) y $d^2q(\lambda)$ tiene $m-1$ ra\'ices entre las $m$ ra\'ices de $dq(\lambda)$.
+  Una propiedad de los polinomios que nos van a servir es:
+  \begin{itemize}
+  \item Fuera de sus ra\'ices, los polinomios crecen (o decrecen) a velocidad y forma $x^k$ con k siendo el grado del polinomio.\\
+  Para "acotar" nuestro polinomio, s\'solo es necesario analizarlo en una regi\'on (ventaja de la cota obtenida en el lema). Como, para toda $\lambda \in \{\lambda_n, \lambda_{n-1},...\lambda_{n-k+1}\}$ el valor de $q(\lambda)$ es cero, no ser\'a necesario analizar esos intervalos. Todos los valores que nos interesan (tanto para $\lambda$ como para $q(\lambda))$ se encuentran entre el cero (porque A es s.p.d) y $\lambda_{n-k}$. 
+  Existen dos opciones para nuestro polinomio, que k sea par (y por lo tanto nuestro polinomio sea de grado impar) o que k sea impar ( y nuestro ...). 
+  \item Sea k par (impar), entonces se cumple que $q(\lambda)$ es un polinomio de grado impar (par), por lo tanto, $q(x) \le 0 (\ x \in \left[ 0, \frac{\lambda_1+ \lambda_{n-k}}{2}\right])$. Sin embargo, como $d^2q(x)< 0 (>0)$ en ese intervalo, la funci\'on es c\'oncava (convexa) en ese intervalo y se encuentra arriba (abajo) de la linea 
+  $$-1+\frac{2\lambda}{\lambda_1+\lambda_{n-k}}\ $$\\
+  $$\quad  (1-\frac{2\lambda}{\lambda_1+\lambda_{n-k}})$$ \\
+  \item Para el intervalo que va de $\left[ \frac{\lambda_1+ \lambda_{n-k}}{2}, \lambda_{n-k}\right]$ pasa justo lo contrario, como las dos curvas se cruzan (el polinomio y la linea) en el mismo punto (la ra\'iz), se necesitar\'ia que hubieran dos cambios de signo en $dq(\lambda)$ para que la linea recta terminara abajo del polinomio, pero como s\'olo hay una ra\'iz de $dq(\lambda)$ en ese intervalo, eso no sucede. Por lo tanto, la linea $-1+\frac{2\lambda}{\lambda_1+\lambda_{n-k}}\ $  \quad $\quad  (1-\frac{2\lambda}{\lambda_1+\lambda_{n-k}})$ va por arriba (abajo) de $q(\lambda)$ en ese intervalo.
+  \item Juntando los dos intervalos, se llega a la conclusi\'on de que:  $$|q(\lambda)| \le \left|1 - \frac{2\lambda}{\lambda_1 + \lambda_{n-m}}\right| \ \ \ \ \ \ \text{en el intervalo $[\lambda_1, \lambda_{n-k}]$} \qed_{Teo_{5.5}}$$
+ \end{itemize}
+ 
+ \item El m\'etodo de GC tiene una propiedad muy \'util en optimizaci\'on. El problema  (\ref{opt}) adopta la forma
+ \bea  \label{opt_mod}
+  \stackrel{\mbox{minimizar}}{ {}_p } & & \raisebox{1.0ex}{$\displaystyle  \frac{1}{2} p^T \nabla^2 f(x) p +  \nabla f(x)^Tp$,}
+ \eea
+ en donde se han omitido los \'{\i}ndices por claridad. Cada paso del m\'etodo de GC requiere de un producto matriz-vector $\nabla^2 f(x) d_k$. Investiga c\'omo aproximar el producto anterior mediante diferencias del gradiente. Al m\'etodo resultante se le conoce como m\'etodo de Newton libre de Hessiana.
+ 
+
+ 
+ \item NOTA: 
+ {\bf GC para el m\'etodo de Newton.} 
+
+ El sistema por resolver en cada iteraci\'on del m\'etodo de Newton es
+ \[
+    \nabla^2 f(x) p^N = -\nabla f(x),
+ \]
+ el m\'etodo de GC aproxima a $p^N$ por medio de la sucesi\'on 
+ \[
+   \left \{ p_0,  p_1 \ldots,  p_{n-1} \right \}.
+ \]
+ Observar que los vectores $p_k$ tienen el papel de los vectores $x_k$ en los algoritmos anteriores, es decir las aproximaciones $p_k$ se actualizan como sigue
+ \[
+    p_{k+1} = p_k + \alpha_k d_k.
+ \] 
+ El m\'etodo inicia con  $p_0 = 0$, de donde es inmediato concluir que $r_0 = -\nabla f(x)$; por lo tanto,  la primera direcci\'on para GC es la direcci\'on opuesta al gradiente
+\[
+   d_0 = - \nabla f(x).
+\]
+Si el producto $d_0^T \nabla^2 f(x) d_0$ resultara negativo o cero, el m\'etodo terminar\'{\i}a con
+\[ 
+  p = -\nabla f(x).
+\]
+En iteraciones subsecuentes GC terminar\'{\i}a con la aproximaci\'on $p_k$  si $||r_k|| < TOL$, o bien 
+\[
+     d_{k+1}^T \nabla^2 f(x) d_{k+1} \le 0. 
+\]\\
+El m\'etodo cumple con el teorema 5.5 para c\'alculos de $p_k$ por lo que la mejor\'ia en la direcci\'on siempre tendr\'a una cota. A este m\'etodo se le conoce como m\'etodo del Gradiente Conjugado Parcial. 
+
+
+
+   \item Estudiar la prueba de convergencia cuadr\'atica del m\'etodo de Newton (Nocedal \& Wright, p\'agina 44). Justificar los pasos omitidos.
+
+\item Versi\'on computacional de GC que se detiene cuando ocurre alguna de las siguientes situaciones se encuentra anexado junto con este documento : a) $||r_k|| \le TOL_1$, b) el n\'umero de iteraciones excede un l\'{\i}mite prestablecido; c) $d_k^TAd_k \le TOL_2$.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+Ahora analizaremos la construcci\'on de {\bf Powell-Symmetric-Broyden ($PSB$)}.
+\\
+\\
+En este caso vamos a resolver el problema de optimizaci\'on convexa:
+\begin{center}
+min $\phi (m) = \frac{1}{2} \displaystyle \sum \limits_{i=1}^{n} (m_{ii} - b_{ii})^{2} + \displaystyle \sum \limits_{i<j} (m_{ij} - b_{ij})^{2}$
+\newline
+s. a. $Am-y=0$
+\end{center}
+
+Donde definimos la forma extendida de una matriz sim\'etrica $B$ pero considerando s\'olo la parte triangular superior de $B$, as\'i pues obtenemos:
+\newline
+$b =
+\begin{bmatrix}
+b_{11} & b_{12} & ... & b_{1n} & | & b_{22} & ... & b_{2n} & | ... | & b_{nn}
+\end{bmatrix}$
+\newline
+\newline
+Y ahora tenemos una nueva versi\'on de la matriz $A$:
+\newline
+\newline
+$A=
+\begin{bmatrix}
+\begin{matrix}
+s_{1} & s_{2} & ... & s_{n} \\
+0 & s_{1} & ... & 0 \\
+\vdots & \vdots & ... & \vdots \\
+0 & 0 & ... & s_{1}
+\end{matrix}
+\begin{vmatrix}
+0 & 0 & ... & 0 \\
+s_{2} & s_{3} & ... & s_{n} \\
+\vdots & \vdots & ... & \vdots \\
+0 & 0 & ... & s_{2}
+\end{vmatrix}
+\begin{matrix}
+... \\
+... \\
+... \\
+...
+\end{matrix}
+\begin{matrix}
+0 \\
+0 \\
+\vdots \\
+s_{n}
+\end{matrix}
+\end{bmatrix}$
+\\
+Las matrices de $Karush$ $Kuhn-Tucker$ son muy parecidas al caso anterior:
+\newline
+$\begin{bmatrix}
+H & A^{T} \\
+A & 0
+\end{bmatrix}
+\begin{bmatrix}
+b_{+} \\
+- \lambda
+\end{bmatrix} =
+\begin{bmatrix}
+Hb \\
+y
+\end{bmatrix}$
+\\
+Con la diferencia de que ahora est\'a presente la matriz $H$ que es una matriz diagonal y las entradas de la misma son $1$ o $2$. Las entradas con valor $1$ corresponden a los elementos diagonales $m_{ii}$ y las entradas con valor $2$ corresponden a los elementos fuera de la diagonal $m_{ij}$.
+\\
+Ahora resolvemos el primer bloque de las ecuaciones de $Karush$ $Kuhn-Tucker$, es decir: $b_{+} = b + H^{-1}A^{T}\lambda$
+\\
+Si llevamos a cabo la multiplicaci\'on de matrices $H^{-1}A^{T}\lambda$ obtendremos que:
+\\
+$H^{-1}A^{T}\lambda =
+\begin{bmatrix}
+1 & 0 & 0 & ... & 0 \\
+0 & \frac{1}{2} & 0 & ... & 0 \\
+0 & 0 & \frac{1}{2} & ... & 0 \\
+\vdots & \vdots & \vdots & ... & \vdots \\
+0 & 0 & 0 & ... & 1
+\end{bmatrix}$
+$\begin{bmatrix}
+s_{1} & 0 & 0 & ... & 0 \\
+s_{2} & s_{1} & 0 & ... & 0 \\
+\vdots & \vdots & \vdots & ... & 0 \\
+0 & s_{2} & 0 & ... & 0 \\
+0 & s_{3} & s_{2} & ... & 0 \\
+\vdots & \vdots & \vdots & ... & \vdots \\
+0 & 0 & 0 & ... & s_{n}
+\end{bmatrix}$
+$\begin{bmatrix}
+\lambda_{1} \\
+\lambda_{2} \\
+\vdots \\
+\lambda_{n}
+\end{bmatrix}=
+\begin{bmatrix}
+\lambda_{1}s_{1} \\
+\frac{\lambda_{1}s_{2} + \lambda_{2}s_{1}}{2} \\
+\vdots \\
+\frac{\lambda_{1}s_{n} + \lambda_{n}s_{1}}{2} \\
+\vdots \\
+\lambda_{n}s_{n}
+\end{bmatrix}$
+\\
+Por otra parte, tomemos la siguiente multiplicaci\'on: $\frac{1}{2} (s\lambda^{T} + \lambda s^{T})$ donde:
+\\
+$s\lambda^{T} =
+\begin{bmatrix}
+s_{1}\lambda_{1} & s_{1}\lambda_{2} & ... & s_{1}\lambda_{n} \\
+s_{2}\lambda_{1} & s_{2}\lambda_{2} & ... & s_{2}\lambda_{n} \\
+\vdots & \vdots & ... & \vdots \\
+s_{n}\lambda_{1} & s_{n}\lambda_{2} & ... & s_{n}\lambda_{n}
+\end{bmatrix}$ y por otro lado
+$\lambda s^{T} =
+\begin{bmatrix}
+\lambda_{1}s_{1} & \lambda_{1}s_{2} & ... & \lambda_{1}s_{n} \\
+\lambda_{2}s_{1} & \lambda_{2}s_{2} & ... & \lambda_{2}s_{n} \\
+\vdots & \vdots & ... & \vdots \\
+\lambda_{n}s_{1} & \lambda_{n}s_{2} & ... & \lambda_{n}s_{n}
+\end{bmatrix}$
+\\
+Por lo que al tomar $\frac{1}{2} (s\lambda^{T} + \lambda s^{T})$ tenemos:
+$\frac{1}{2} (s\lambda^{T} + \lambda s^{T}) =
+\begin{bmatrix}
+\lambda_{1}s_{1} & \frac{\lambda_{1}s_{2} + s_{1}\lambda_{2}}{2} & ... & \frac{\lambda_{1}s_{n} + s_{1}\lambda_{n}}{2} \\
+\frac{\lambda_{2}s_{1} + s_{2}\lambda_{1}}{2} & \lambda_{2}s_{2} & ... & \frac{\lambda_{2}s_{n} + s_{2}\lambda_{n}}{2} \\
+\vdots & \vdots & ... & \vdots \\
+\frac{\lambda_{n}s_{1} + s_{n}\lambda_{1}}{2} & \frac{\lambda_{n}s_{2} + s_{n}\lambda_{2}}{2} & ... & \lambda_{n}s_{n}
+\end{bmatrix}$
+\\
+Es f\'acil observar que $H^{-1}A^{T}\lambda$ es la expansi\'on del tri\'angulo superior de $\frac{1}{2} (s\lambda^{T} + \lambda s^{T})$
+\\
+Organizando de forma matricial tenemos:
+\\
+$B_{+} = B + \frac{1}{2} (s\lambda^{T} + \lambda s^{T})$
+\\
+Ahora tomamos el producto $H^{-1}A^{T}$ y lo premultiplicamos por $A$ obteniendo as\'i la matriz:
+\\
+$AH^{-1}A^{T}=
+\begin{bmatrix}
+s_{1}^{2} + \sum \limits_{i=1}^{n} s_{i}^{2} & s_{1}s_{2} & s_{1}s_{3} & ... & s_{1}s_{n} \\
+s_{1}s_{2} & s_{2}^{2} + \sum \limits_{i=1}^{n} s_{i}^{2} & s_{2}s_{3} & ... & s_{2}s_{n} \\
+\vdots & \vdots & \vdots & ... & \vdots \\
+s_{1}s_{n} & s_{2}s_{n} & s_{3}s_{n} & ... & s_{n}^{2} + \sum \limits_{i=1}^{n} s_{i}^{2}
+\end{bmatrix}$
+\\
+Ahora usamos la f\'ormula de $Shermann-Morrison$: $(A + uv^{T})^{-1} = A^{-1} - \frac{A^{-1} uv^{T}A^{-1}}{1+ v^{T}A^{-1}u}$ donde sustituimos de la f\'ormula: $A=\frac{1}{2}s^{T}s\mathbb{I}$, $u=s$ y $v^{T}=s^{T}$
+\\
+Obtenemos el siguiente resultado:
+\\
+$(AH^{-1}A^{T})^{-1} = \frac{2}{s^{T}s} \left( \mathbb{I} - \frac{ss^{T}}{2s^{T}s} \right)$ de donde podemos despejar
+\\
+$\lambda = \frac{2}{s^{T}s} \left( \mathbb{I} - \frac{ss^{T}}{2s^{T}s} \right) (y - Bs)$
+\\
+Finalmente, al sustituir $\lambda$ obtenemos:
+\\
+$B_{+} = B + \frac{(y-Bs)s^{T} + s(y-Bs)^{T}}{s^{T}s} - \frac{(y-Bs)^{T}s}{(s^{T}s)^{2}}ss^{T} \qed_{P.S.B.}$
+
+\enddocument
+
+
+
+

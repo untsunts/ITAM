@@ -1,0 +1,18 @@
+ Nombre del problema                      dtoc1nc  
+ Numero de variables                    1485 
+ Numero de restricciones                 990 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             3.484375000000000e+01 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.13e+01 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     1.53582143e+01     1.09e+01      3.90e+00    
+    2     2.14104742e+01     2.48e+00      3.03e+00    
+    3     2.49421601e+01     2.47e-01      1.87e+00    
+
+ inercia incorrecta
+ tiempo de programa :   2.71e-01

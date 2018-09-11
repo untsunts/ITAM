@@ -1,0 +1,17 @@
+ Nombre del problema                      orthrgdm  
+ Numero de variables                    10003 
+ Numero de restricciones                5000 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             0.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              7.15e+02 
+ Norma del gradiente de la Lagrangiana en el punto inicial    0.00e+00 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     5.98044321e+02     1.47e+04      3.91e+03    
+    2     6.01087002e+03     5.15e+03      3.45e+04    
+
+ inercia incorrecta
+ tiempo de programa :   4.16e+00

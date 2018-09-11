@@ -1,0 +1,13 @@
+ Nombre del problema                      hs105  
+ Numero de variables                       8 
+ Numero de restricciones                   0 
+ Numero maximo de iteraciones            1000 
+ Tolerancia                               1.00e-06 
+
+ Objetivo en el punto inicial             1.291260092033420e+03 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    2.40e+02 
+
+ inercia incorrecta  
+
+ tiempo de programa :   1.53e-02

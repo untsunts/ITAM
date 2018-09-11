@@ -1,0 +1,12 @@
+
+ Guillermo Santiago Novoa P?rez
+ Nombre del problema                      lehmer  
+ Numero maximo de iteraciones             1000 
+ Tolerancia                               1.00e-07 
+
+
+
+                                  GC                      pcg    
+
+|     n    |  nombre  |    tiempo       iter   |    tiempo       iter   |
+---------------------------------------------------------------------------

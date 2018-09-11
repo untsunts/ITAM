@@ -1,0 +1,264 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage[spanish]{babel}
+\textwidth     =  7.0in
+\textheight    =  9.0in
+\oddsidemargin = -0.2in
+\topmargin     = -0.5 in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath, amsthm, amssymb, latexsym}
+\newtheorem{lma}{Lema}
+\newtheorem{thm}{Teorema}
+\usepackage{mathtools}
+\usepackage{framed}
+\usepackage{setspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\ident}{\mathbb{I}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\ul}{\underline}
+
+%\input{header}
+%
+\newcommand{\noi}{\noindent}
+\newcommand{\pa}{\partial}
+%
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+%
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+%
+\newcommand{\non}{\nonumber}
+%
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+%
+\newcommand{\bee}{\begin{enumerate}}
+\newcommand{\eee}{\end{enumerate}}
+%
+\newcommand{\bed}{\begin{description}}
+\newcommand{\edd}{\end{description}}
+%
+\newcommand{\bec}{\begin{center}}
+\newcommand{\edc}{\end{center}}
+%
+\renewcommand{\thefootnote}{\roman{footnote}}
+%
+\begin{document}
+\title{BFGS: convergencia}
+\author{An\'alisis aplicado. Proyecto.}
+\date{28 de abril, 2015}
+%\maketitle
+
+\centerline{\large \bf An\'alisis aplicado.}
+\centerline{\large \bf Convergencia BFGS.}
+\centerline{\bf 28 de abril, 2015. Guillermo Santiago Novoa P\'erez}
+\subsection*{1:}
+\subsection*{Broyden (algoritmo)}
+\noi\\
+\noi Tanto el algoritmo como los resultados a los problemas se encuentran en el anexo.
+\subsection*{2:}
+\subsection*{Rayleigh (interpretaci\'on)}
+\noi\\
+\noi El cociente de Rayleigh es una funci\'on $R(x,{\bf M})$ que para cada vector en un espacio y para una matriz ya dada (s.p.d.) devuelve un valor en el intervalo $(\lambda_1,\lambda_n)$ con $\lambda_i$ los valores propios de {\bf M}. El cociente de Rayleigh siempre alcanza sus cotas, tanto inferior como superior, en sus respectivos vectores propios.\\
+\noi La f\'ormula del cociente de Rayleigh es:
+$$R(x,{\bf M}) = \frac{x^{'}{\bf M}x}{\|x\|^2}$$
+\noi De la hip\'otesis dada, es f\'acil obtener el cociente de Rayleigh si se divide entre $\|z\|^2$.\\
+
+\ {\bf Interpretaci\'on.-}\ \ 
+\noi Para toda $x_k$, obtenida con direcciones de descenso, su Hessiana cumplir\'a que su cociente de Rayleigh estar\'a acotado entre m y M, eso quiere decir que sin importar en d\'onde se encuentre $x_k$ (si se obtuvo con direcciones de descenso) su Hessiana tendr\'a sus valores propios dentro del intervalo $ (\ m,M\ )$. Este es el mejor resultado que se puede dar sobre las matrices Hessianas que aparecen en los puntos usados ya que no se puede dar un resultado exacto sobre el radio espectral como en los m\'etodos pasados, sin embargo, esta cota sumada a las condiciones de descenso asegurar\'a la convergencia del m\'etodo. M\'as all\'a, esto garantiza que el problema ser\'a convexo (porque las matrices ser\'an s.p.d.) y que existir\'a convergencia a un punto minimizador.
+\subsection*{3:}
+\subsection*{Art\'iculo Dennis Mor\'e}
+\noi\\
+\noi El art\'iculo abarca los siguientes temas (de manera matem\'atica y explicativa)
+\begin{itemize}
+\item{Diferencias entre m\'etodos y familia de Broyden}
+\item Radios de convergencia
+\item Actualizaci\'on de las matrices de diferentes modelos
+\item Usos de los diferentes m\'etodos
+\item El art\'iculo se encuentra en la siguiente p\'agina: $http://www.jstor.org/stable/2029325?seq=1\#page\_scan\_tab\_contents$
+\end{itemize}
+\subsection*{4: }
+\subsection*{Problemas 6.8-6.11}
+\noi\\
+\noi{\bf{6.8}}
+$$h(t)= 1-t+\ln(t);$$ $$ h^{'}(t)=-1+\frac{1}{t};$$ $$h{''}(t)=-\frac{1}{t^{2}};$$
+Como $t^{2}$ es siempre positiva en el dominio de la funci\'on $(0,\infty)$, $-\frac{1}{t^{2}}$ es siempre negativa y la funci\'on $h^{'}(t)$ es estrictamente decreciente. \\
+\beas 
+\forall t \in (1,\infty),& t > 1 \iff 1> \frac{1}{t} \\
+\therefore &h^{'}(t) <  0;\\
+\forall t \in (0,1), & t < 1 \iff  1 < \frac{1}{t} \\
+\therefore &h^{'}(t) > 0; \\
+\eeas
+\noi Por los dos hechos mencionados anteriormente, $h(t)$ tiene un \'unico punto cr\'itico en $t=1$, donde $h^{'}(t)=0$. Adem\'as, como $h^{''}(t)$ siempre es negativa, $t=1$ es un maximizador global de la funci\'on $h(t)$, por lo que $$0 = h(1) \geq h(t) ,\ \ \ \  \forall t \in (0, \infty)$$\\ \\
+\noi{\bf{6.9}}
+ \beas
+ \psi({\bf B})=&tr({\bf B}) - \ln(\det({\bf B}))\\
+{\bf B}=&{\bf P}{\bf \Lambda}{\bf P^{'}}\\
+tr({\bf B})=&tr({\bf P}{\bf \Lambda}{\bf P^{'}})\\
+=&tr({\bf \Lambda}{\bf P^{'}}{\bf P})\\ \ \ \ 
+\eeas
+
+\ \ \ \ \ {\it como {\bf P} es una matriz unitaria\ }{\it ({\bf B} es una matriz hermitiana) }\\ 
+\beas
+{\bf P} = \ {\bf P^{'}} ={\bf P^{-1}}& \\ 
+\implies tr({\bf B}) = tr({\bf \Lambda})&\\ 
+\text{\it Adem\'as , se tiene que: }
+\det({\bf B})\ =&\det({\bf P})\det({\bf \Lambda})\det({\bf P^{'}})\\
+\det({\bf P})\ =\det({\bf P^{'}})\ =&\det({\bf P^{-1}})\ =1,\\ \therefore \ \det({\bf B}) =&\det({\bf \Lambda})\\
+\eeas
+\noi ${\bf \Lambda }$ es una matriz diagonal, con los valores propios de ${\bf B}$ en la diagonal, por lo tanto es f\'acil calcular tanto su traza como su determinante:
+\beas
+tr({\bf \Lambda})\  =& \sum_{i=1}^{n} \lambda_{i}; \\
+\det({\bf \Lambda})\ =& \prod_{i=1}^{n} \lambda_{i};\\ \\
+\therefore \psi({\bf B})\  =& \sum_{i=1}^{n} \lambda_{i} - \ln(\prod_{i=1}^{n} \lambda_{i})\\
+\ =& \sum_{i=1}^{n} \lambda_{i} -\sum_{i=1}^{n} \ln(\lambda_{i})\\
+\ =&\sum_{i=1}^{n} \lambda_{i} - \ln(\lambda_{i})\\
+\eeas
+\noi Hay muchas formas de ver que $\lambda_{i}$ siempre es mayor que $\ln(\lambda_{i})$ en el dominio que estamos trabajando ( como B es s.p.d. sus valores propios son reales y positivos, es decir, $\lambda_{i} \in (0,\infty)$), una forma de visualizarlo ser\'ia notando que:
+$$x > \ln(x) \iff \exp^{x} > x$$
+$$\forall x\in \real\backslash \{0\} $$ 
+\noi Por lo tanto, llegamos a la conclusi\'on de que $\ \psi({\bf B})\ >\ 0 \ \forall {\bf B}\  s.p.d.$ \\ \\ \\
+\noi{\bf 6.10}
+
+\begin{itemize} 
+\item{\bf b)}\\
+\noi Dados $x$,$y$, $u$, $v$, sea ${\bf Q}$ una matriz que satisface: 
+$$y^{'}{\bf Q} = e_{1}^{'}\ \ ,\ \ v^{'}{\bf Q} = e_{2}^{'}\ ;$$
+\noi y sean 
+$$ a = {\bf Q^{-1}}x\ \ ,\ \ b = {\bf Q^{-1}}u\ ;$$
+\noi Si {\bf Q} es de rango completo (necesario para que exista ${\bf Q^{-1}}$), el determinante de {\bf Q}{\bf A} (A no singular) es la multiplicaci\'on de sus determinantes, entonces:
+\beas
+\det(\ident + xy^{'} + uv^{'})\  =&\det(\ \ident + {\bf Q^{-1}}xy^{'}{\bf Q} + {\bf Q{-1}}uv^{'}{\bf Q}) \\
+\ =&\det(\ \ident + ae_{1}^{'} + be_{2}^{'})\\
+\ =&\det(\left[a+e_{1},b+e_{2},e_{3},...,e_{n}\right])\\
+\ \text{hacemos el determinante por menores}\ & \text{(aprovechando la forma de la matriz)}\\
+\ =& (1+a_{1})(1+b_{2})-a_{2}b_{1}
+\eeas
+\noi pero como $$a_{1}\ = e_{1}^{'}a\ = e_{1}^{'}{\bf Q^{-1}}x\ = y^{'}x \ ;$$
+$$a_{2}\ = e_{2}^{'}a\ =e_{2}^{'}{\bf Q^{-1}}x\ = v^{'}x \ ;$$
+$$b_{2}\ = e_{2}^{'}b\ =e_{2}^{'}{\bf Q^{-1}}u\ = v^{'}u  \ ;$$
+$$b_{1}\ = e_{1}^{'}b\ = e_{1}^{'}{\bf Q^{-1}}u\ = y^{'}u \ ;$$\\
+\noi Por lo tanto, tenemos que $\det(\ \ident + xy^{'} + uv^{'})\ =( 1\ +\ y^{'}x)( 1\ +\ v^{'}u)\ -(x^{'}v)(y^{'}u) $\\
+
+\item{\bf a)}\\
+\noi El inciso {\bf a)} sale inmediatamente del inciso {\bf b)} sustituyendo $u\ = \bar{0}\ =v $.\\ \\
+
+\item{\bf c)}\\ 
+\noi Ahora, aplicamos el inciso {\bf b)} en la matriz {\bf B}:
+\beas
+{\bf B_{k+1}}\ =&{\bf B_{k}} - \frac{{\bf B_{k}}s_ks_k^{'}{\bf B_k}}{s_k^{'}{\bf B_k}s_k} + \frac{y_ky_k^{'}}{y_k^{'}s_k}\\
+\ =&{\bf B_k}\left[\ \ident -\frac{s_ks_k^{'}{\bf B_k}}{s_k^{'}{\bf B}s_k}+\frac{{\bf B_k^{-1}}y_kt_k^{'}}{y_k^{'}s_k}\right]\\
+\implies \det({\bf B_{k+1}})\ =& \det\left({\bf B_k}\left[\ \ident -\frac{s_ks_k^{'}{\bf B_k}}{s_k^{'}{\bf B}s_k}+\frac{{\bf B_k^{-1}}y_kt_k^{'}}{y_k^{'}s_k}\right]\right)\\
+\ =&\det({\bf B_k})\det\left(\left[\ \ident -\frac{s_ks_k^{'}{\bf B_k}}{s_k^{'}{\bf B}s_k}+\frac{{\bf B_k^{-1}}y_kt_k^{'}}{y_k^{'}s_k}\right]\right)\\ \\
+\ &\text{\it por el resultado anterior}\\
+\ =&\det({\bf B_k})\left[\left(1\ -\frac{({\bf B_k}s_k)^{'}}{s_k^{'}{\bf B_k}s_k}s_k\right)\left(1\ +\frac{y_k^{'}}{y_k^{'}s_k}{\bf B_k^{-1}}y_k\right)\ -\left(-s_k^{'}\frac{y_k}{y_k^{'}s_k}\right)\left(\frac{({\bf B_k}s_k)^{'}}{s_k^{'}{\bf B_k}s_k}{\bf B_k^{-1}}y_k\right)\right]\ ;\\
+\eeas
+\noi El primer t\'ermino de la resta (dentro del corchete) se elimina y del segundo s\'olo queda la segunda parte, por lo que al final, nos queda la siguiente expresi\'on:
+$$\det({\bf B_{k+1}})\ =\det({\bf B_k})\left[\frac{s_k^{'}y_ks_k^{'}{\bf B_k}{\bf B_k^{-1}}y_k}{y_k^{'}s_ks_k^{'}{\bf B_k}s_k}\right] $$\\
+\noi Como $s_k^{'}y_k = y_k^{'}s_k\ $ porque son reales, y porque dentro queda una identidad , la expresi\'on simplificada queda de la siguiente manera:
+$$\det({\bf B_{k+1}})= \det({\bf B_k})\frac{y_k^{'}s_k}{s_k^{'}{\bf B_k}s_k}\ \ \qed$$\\ 
+\end{itemize}
+\noi{\bf 6.11}
+
+\noi Algunas propiedades \'utiles de las trazas que nos pueden servir son:
+$$tr({\bf A+B})\ = tr({\bf A})+ tr({\bf B})$$
+$$tr({\bf AB^{'}})\ =tr({\bf B^{'}A})$$
+$$tr(r{\bf A})\ =r*tr({\bf A})\ \ \ \  \text{siendo r un escalar}$$\\
+\noi Ahora, se intentar\'a calcular la traza de {\bf B} de una manera m\'as econ\'onimca:
+\beas
+tr({\bf B_{k+1}})\ =& tr\left({\bf B_k} - \frac{{\bf B_k}s_ks_k^{'}{\bf B_k}}{s_k^{'}{\bf B_k}s_k} + \frac{y_ky_k^{'}}{y_k^{'}s_k}\right)\\
+\ =&tr({\bf B_k}) - tr\left(\frac{{\bf B_k}s_ks_k^{'}{\bf B_k}}{s_k^{'}{\bf B_k}s_k}\right) + tr\left(\frac{y_ky_k^{'}}{y_k^{'}s_k}\right)\\
+\ =&tr({\bf B_k}) - \frac{1}{s_k^{'}{\bf B_k}s_k}tr({\bf B_k}s_ks_k^{'}{\bf B_k})\  + \frac{y_ky_k^{'}}{y_k^{'}s_k}\\
+\ =&tr({\bf B_k}) - \frac{s_k^{'}{\bf B_k{\bf B_k}s_k}}{s_k^{'}{\bf B_k}s_k}\  + \frac{y_ky_k^{'}}{y_k^{'}s_k}\\
+\ =&tr({\bf B_k}) - \frac{\|{\bf B_k}\|^{2}}{s_k^{'}{\bf B_k}s_k} +\frac{\|y_k\|^{2}}{y_k^{'}s_k}\ \ \ \qed\\
+\eeas\\
+
+\subsection*{5:}
+\subsection*{Teorema}
+
+ \[ \|G(x) - G(x^*)\| \leq L \| x - x^* \|\]
+ \[ \tilde{s_k} = G_{*}^{1/2}s_k, \quad \tilde{y_k} = G_{*}^{-1/2}y_k, \quad \tilde{B_k} = G_{*}^{-1/2} B_k G_{*}^{1/2},\]
+ \[ cos \tilde{\theta_k} = \frac{\tilde{s_k}^T \tilde{B_k} \tilde{s_k}}{\|\tilde{s_k}\| \|\tilde{B_k} \tilde{s_k}},\quad \tilde{q_k} = \frac{\tilde{s_k}^T \tilde{B_k} \tilde{s_k}}{\|\tilde{s_k}\|^2}\]
+ \[ \tilde{M_k} = \frac{\| \tilde{y_k} \|^2}{\tilde{y_k}^T \tilde{s_k}},\quad \tilde{m_k} = \frac{\tilde{y_k}^T \tilde{s_k} }{\tilde{s_k}^T \tilde{s_k}}.\]
+\[ \tilde{B_{k+1}} = \tilde{B_{k}} - \frac{\tilde{B_{k}} \tilde{s_{k}} \tilde{s_{k}}^T \tilde{B_{k}}}{\tilde{s_{k}}^T \tilde{B_{k}} \tilde{s_{k}}} + \frac{\tilde{y_{k}} \tilde{y_{k}}^T }{\tilde{y_{k}}^T \tilde{s_{k}}}.\]
+\beas
+\begin{split}
+\psi(\tilde{B_{k+1}}) & = \psi(\tilde{B_{k}} + (\tilde{M_{k+1}} - \ln(\tilde{m_{k}}) -1)\\
+& \quad + \left[ 1 - \frac{\tilde{q_k}}{cos^2 \tilde{\theta_k}} + \ln\left(\frac{\tilde{q_k}}{cos^2 \tilde{\theta_k}} \right) \right]\\
+& \quad + \ln\left(cos^2 \tilde{\theta_k} \right)\\
+\end{split}
+\eeas
+\[ y_k - G_{*} s_k = (\tilde{G_k} - \tilde{G_{*}}) s_k,\]
+\[ \tilde{y_k} - \tilde{s_k} = G_{*}^{-1/2} (\tilde{G_k} - \tilde{G_{*}}) G_{*}^{-1/2} \tilde{s_k}.\]
+\[ \|\tilde{y_k} - \tilde{s_k}\| \leq \|G_{*}^{-1/2}\|^2 \|\tilde{s_k}\| \|\tilde{G_k} - \tilde{G_{*}}\| \leq \|G_{*}^{-1/2}\|^2 \|\tilde{s_k}\| L\epsilon_k,\]
+\[ \epsilon_k = max\{ \|x_{k+1} - x^*\|, \|x_{k} - x^*\|\}.\]
+\beas
+\frac{\|\tilde{y_k} - \tilde{s_k}\|}{\| \tilde{s_k}\|} \leq \bar{c} \epsilon_k,
+\eeas
+\[
+\| \tilde{y_{k}} -  \tilde{s_{k}} \| \leq \bar{c} \epsilon_k \| \tilde{s_{k}} \|, \quad \| \tilde{s_{k}} - \tilde{y_{k}}  \| \leq \bar{c} \epsilon_k \| \tilde{s_{k}} \|
+\]
+\beas
+(1 - \bar{c} \epsilon_k) \| \tilde{s_{k}} \| \leq \| \tilde{y_{k}} \| \leq (1 + \bar{c} \epsilon_k) \| \tilde{s_{k}} \|
+\eeas
+
+\[
+  (1 - \bar{c} \epsilon_k)^2 \| \tilde{s_{k}} \|^2 - 2 \tilde{y_{k}}^T \tilde{s_{k}} + \| \tilde{s_{k}} \|^2 \leq \| \tilde{y_{k}} \|^2 - 2 \tilde{y_{k}}^T \tilde{s_{k}} +  \| \tilde{s_{k}} \|^2 \leq \bar{c}^2 \epsilon_{k}^2 \| \tilde{s_{k}} \|^2,
+\]
+\[
+2 \tilde{y_{k}}^T \tilde{s_{k}} \geq (1 - 2 \bar{c} \epsilon_k + \bar{c}^2 \epsilon_{k}^2 + 1 - \bar{c}^2 \epsilon_{k}^2) \| \tilde{s_{k}} \|^2 = 2 (1 - \bar{c} \epsilon_k)\| \tilde{s_{k}} \|^2 
+\]
+\beas  
+\tilde{m_{k}} = \frac{\tilde{y_{k}}^T  \tilde{s_{k}}}{\| \tilde{s_{k}} \|^2 } \geq 1 - \bar{c} \epsilon_k
+\eeas
+\beas  
+\tilde{M_{k}} = \frac{\| \tilde{y_{k}} \|^2 }{\tilde{y_{k}}^T  \tilde{s_{k}}} \leq \frac{1 + \bar{c} \epsilon_k}{1 - \bar{c} \epsilon_k}
+\eeas
+\beas 
+\tilde{M_{k}} \leq 1 + \frac{2 \bar{c}}{1 - \bar{c} \epsilon_k} \epsilon_k \leq 1 + \bar{c} \epsilon_k
+\eeas
+\[
+\frac{-x}{1-x}-\ln(1-x)=h\left(\frac{1}{1-x}\right)\leq 0
+\]
+\[
+\ln(1-\bar{c}\epsilon_k) \geq \frac{-\bar{c}\epsilon_k}{1-\bar{c}\epsilon_k} \geq -2\bar{c}\epsilon_k
+\]
+\beas 
+\ln( \tilde{m_k} )\geq \ln(1-\bar{c}\epsilon_k) \geq -2\bar{c}\epsilon_k \geq -2c\epsilon_k
+\eeas
+\beas 
+0<\psi(\tilde{B_{k+1}}) \leq \psi(\tilde{B_{k}}) + 3c\epsilon_k + \ln(cos^2\tilde{\theta_k} )+ \left[ 1- \frac{\tilde{q_k}}{cos^2\tilde{\theta_k}} + \ln\left(\frac{\tilde{q_k}}{cos^2\tilde{\theta_k}}\right) \right]
+\eeas
+\[
+\sum\limits_{j=0}^\infty \left(\ln\left(\frac{1}{cos^2\tilde{\theta_j}}\right) - \left[ 1- \frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} + \ln\left(\frac{\tilde{q_j}}{cos^2\tilde{\theta_j}}\right) \right]\right) \leq \psi(\tilde{B_0})+3c\sum\limits_{j=0}^\infty \epsilon_j < +\infty
+\]
+\[
+\lim_{j\to\infty} \ln\left( \frac{1}{cos^2\tilde{\theta_j}}\right)=0, \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+\lim_{j\to\infty} \left( 1- \frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} + \ln\left(\frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} \right)\right) = 0
+\]
+\beas 
+\lim_{j\to\infty} cos\tilde{\theta_j}=1,  \ \ \ \ \ \ \ \ 
+\lim_{j\to\infty} \tilde{q_j}=1
+\eeas
+\beas
+\frac{ \| G_{*} ^{-1/2} (B_k - G_{*}) s_k \|^2 }{ \|  G_{*} ^{1/2} s_k \|} =& \frac{ \| (\tilde{B}_{k} - I) \tilde{s}_{k} \|^2 }{ \|  \tilde{s}_{k} \|^2} \\
+\ =& \frac{ \| \tilde{B}_{k} \tilde{s}_{k} \|^2 - 2 \tilde{s}_{k}^T \tilde{B}_{k} \tilde{s}_{k} + \tilde{s}_{k}^T \tilde{s}_{k} }{ \tilde{s}_{k}^T  \tilde{s}_{k}} \\
+\ =& \frac{\tilde{q}_{k} ^2 }{ cos \tilde{\theta}_{k}^2 } - 2 \tilde{q}_{k} + 1.\\ \\ 
+ \therefore\ & \lim_{k \to \infty} \frac{\| (B_k - G_{*}) s_k \|}{\| s_k \|} = 0 \ \ \ \qed\\
+\eeas
+
+
+\enddocument
+
+
+
+

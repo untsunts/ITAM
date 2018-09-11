@@ -1,0 +1,46 @@
+ Nombre del problema                      orthregb  
+ Numero de variables                      27 
+ Numero de restricciones                   6 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             0.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              1.80e+02 
+ Norma del gradiente de la Lagrangiana en el punto inicial    0.00e+00 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     1.98236806e-08     1.16e-03      9.90e-04   1.00e+00   1.00e-04  
+    2     4.64705485e-15     1.97e-08      6.71e-08   1.00e+00   1.00e-04  
+
+
+ Minimizador local del modelo: 
+ 	   9.49999999e+00 
+ 	   9.49999999e+00 
+ 	   4.99999999e-01 
+ 	   6.49999998e+00 
+ 	  -5.49999998e+00 
+ 	   4.99999998e-01 
+ 	  -8.49999998e+00 
+ 	  -8.49999998e+00 
+ 	   4.99999999e-01 
+ 	  -5.49999998e+00 
+ 	   6.49999998e+00 
+ 	   4.99999998e-01 
+ 	   4.99999997e-01 
+ 	   4.99999997e-01 
+ 	   7.49999997e+00 
+ 	   4.99999998e-01 
+ 	   4.99999998e-01 
+ 	  -6.49999997e+00 
+ 	   1.01900446e-02 
+ 	  -3.91924790e-03 
+ 	   7.55066155e-03 
+ 	   1.01900446e-02 
+ 	   7.55066155e-03 
+ 	   2.07320215e-02 
+ 	   6.91072907e-03 
+ 	   6.91072907e-03 
+ 	   1.79166723e-02 
+
+ tiempo de programa :   3.41e-03

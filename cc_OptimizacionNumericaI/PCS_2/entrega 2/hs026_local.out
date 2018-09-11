@@ -1,0 +1,36 @@
+ Nombre del problema                      hs026  
+ Numero de variables                       3 
+ Numero de restricciones                   1 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             2.116000000000000e+01 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.30e+01 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     1.20379174e+01     4.92e+00      3.66e+01    
+    2     2.23695303e+00     1.55e+00      1.11e+01    
+    3     4.28964001e-01     3.88e-01      2.75e+00    
+    4     8.11429082e-02     1.18e-01      8.48e-01    
+    5     1.58186075e-02     5.77e-02      2.52e-01    
+    6     3.11935169e-03     2.87e-02      7.47e-02    
+    7     6.16070869e-04     1.34e-02      2.21e-02    
+    8     1.21691755e-04     6.09e-03      6.55e-03    
+    9     2.40378666e-05     2.73e-03      1.94e-03    
+   10     4.74822050e-06     1.22e-03      5.75e-04    
+   11     9.37920099e-07     5.43e-04      1.70e-04    
+   12     1.85268168e-07     2.42e-04      5.05e-05    
+   13     3.65961813e-08     1.08e-04      1.50e-05    
+   14     7.22887532e-09     4.78e-05      4.43e-06    
+   15     1.42792599e-09     2.12e-05      1.31e-06    
+   16     2.82059454e-10     9.45e-06      3.89e-07    
+
+
+ Minimizador local del modelo: 
+ 	   9.97947397e-01 
+ 	   9.97947397e-01 
+ 	   1.00204552e+00 
+
+ tiempo de programa :   3.11e-03

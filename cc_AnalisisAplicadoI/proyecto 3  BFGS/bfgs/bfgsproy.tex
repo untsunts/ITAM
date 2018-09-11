@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+\usepackage{latexsym}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{framed}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{caption}
+
+\setlength\parindent{24pt}
+\textwidth     =  6.5in
+\textheight    =  8.2in
+\oddsidemargin =  -0.2in
+\topmargin     = -0.4in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\ul}{\underline}
+%\input{header}
+%
+\newcommand{\noi}{\noindent}
+\newcommand{\pa}{\partial}
+%
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+%
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+%
+\newcommand{\non}{\nonumber}
+%
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+%
+\newcommand{\bee}{\begin{enumerate}}
+\newcommand{\eee}{\end{enumerate}}
+%
+\newcommand{\bed}{\begin{description}}
+\newcommand{\edd}{\end{description}}
+%
+\newcommand{\bec}{\begin{center}}
+\newcommand{\edc}{\end{center}}
+%
+\renewcommand{\thefootnote}{\roman{footnote}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+
+\noi{\bf 1}
+\\
+ \[ \|G(x) - G(x^*)\| \leq L \| x - x^* \|\]
+ 
+ \[ \tilde{s_k} = G_{*}^{1/2}s_k, \quad \tilde{y_k} = G_{*}^{-1/2}y_k, \quad \tilde{B_k} = G_{*}^{-1/2} B_k G_{*}^{1/2},\]
+ 
+ \[ cos \tilde{\theta_k} = \frac{\tilde{s_k}^T \tilde{B_k} \tilde{s_k}}{\|\tilde{s_k}\| \|\tilde{B_k} \tilde{s_k}},\quad \tilde{q_k} = \frac{\tilde{s_k}^T \tilde{B_k} \tilde{s_k}}{\|\tilde{s_k}\|^2}\]
+ 
+ \[ \tilde{M_k} = \frac{\| \tilde{y_k} \|^2}{\tilde{y_k}^T \tilde{s_k}},\quad \tilde{m_k} = \frac{\tilde{y_k}^T \tilde{s_k} }{\tilde{s_k}^T \tilde{s_k}}.\]
+  
+\[ \tilde{B_{k+1}} = \tilde{B_{k}} - \frac{\tilde{B_{k}} \tilde{s_{k}} \tilde{s_{k}}^T \tilde{B_{k}}}{\tilde{s_{k}}^T \tilde{B_{k}} \tilde{s_{k}}} + \frac{\tilde{y_{k}} \tilde{y_{k}}^T }{\tilde{y_{k}}^T \tilde{s_{k}}}.\]
+
+\begin{eqnarray}  \label{6.53}
+\begin{split}
+\psi(\tilde{B_{k+1}}) & = \psi(\tilde{B_{k}} + (\tilde{M_{k+1}} - \ln(\tilde{m_{k}}) -1)\\
+& \quad + \left[ 1 - \frac{\tilde{q_k}}{cos^2 \tilde{\theta_k}} + \ln\left(\frac{\tilde{q_k}}{cos^2 \tilde{\theta_k}} \right) \right]\\
+& \quad + \ln\left(cos^2 \tilde{\theta_k} \right)\\
+\end{split}
+\end{eqnarray}
+
+\[ y_k - G_{*} s_k = (\tilde{G_k} - \tilde{G_{*}}) s_k,\]
+
+\[ \tilde{y_k} - \tilde{s_k} = G_{*}^{-1/2} (\tilde{G_k} - \tilde{G_{*}}) G_{*}^{-1/2} \tilde{s_k}.\]
+
+\[ \|\tilde{y_k} - \tilde{s_k}\| \leq \|G_{*}^{-1/2}\|^2 \|\tilde{s_k}\| \|\tilde{G_k} - \tilde{G_{*}}\| \leq \|G_{*}^{-1/2}\|^2 \|\tilde{s_k}\| L\epsilon_k,\]
+
+\[ \epsilon_k = max\{ \|x_{k+1} - x^*\|, \|x_{k} - x^*\|\}.\]
+
+\begin{eqnarray}  \label{6.54}
+\frac{\|\tilde{y_k} - \tilde{s_k}\|}{\| \tilde{s_k}\|} \leq \bar{c} \epsilon_k,
+\end{eqnarray}
+
+
+
+\noi{\bf 2}
+\\
+\[
+\| \tilde{y_{k}} -  \tilde{s_{k}} \| \leq \bar{c} \epsilon_k \| \tilde{s_{k}} \|, \quad \| \tilde{s_{k}} - \tilde{y_{k}}  \| \leq \bar{c} \epsilon_k \| \tilde{s_{k}} \|
+\]
+
+\bea  \label{6.55}
+(1 - \bar{c} \epsilon_k) \| \tilde{s_{k}} \| \leq \| \tilde{y_{k}} \| \leq (1 + \bar{c} \epsilon_k) \| \tilde{s_{k}} \|
+\eea
+
+\[
+  (1 - \bar{c} \epsilon_k)^2 \| \tilde{s_{k}} \|^2 - 2 \tilde{y_{k}}^T \tilde{s_{k}} + \| \tilde{s_{k}} \|^2 \leq \| \tilde{y_{k}} \|^2 - 2 \tilde{y_{k}}^T \tilde{s_{k}} +  \| \tilde{s_{k}} \|^2 \leq \bar{c}^2 \epsilon_{k}^2 \| \tilde{s_{k}} \|^2,
+\]
+
+\[
+2 \tilde{y_{k}}^T \tilde{s_{k}} \geq (1 - 2 \bar{c} \epsilon_k + \bar{c}^2 \epsilon_{k}^2 + 1 - \bar{c}^2 \epsilon_{k}^2) \| \tilde{s_{k}} \|^2 = 2 (1 - \bar{c} \epsilon_k)\| \tilde{s_{k}} \|^2 
+\]
+
+\bea  \label{6.56}
+\tilde{m_{k}} = \frac{\tilde{y_{k}}^T  \tilde{s_{k}}}{\| \tilde{s_{k}} \|^2 } \geq 1 - \bar{c} \epsilon_k
+\eea
+
+\bea  \label{6.57}
+\tilde{M_{k}} = \frac{\| \tilde{y_{k}} \|^2 }{\tilde{y_{k}}^T  \tilde{s_{k}}} \leq \frac{1 + \bar{c} \epsilon_k}{1 - \bar{c} \epsilon_k}
+\eea
+
+\bea  \label{6.58}
+\tilde{M_{k}} \leq 1 + \frac{2 \bar{c}}{1 - \bar{c} \epsilon_k} \epsilon_k \leq 1 + \bar{c} \epsilon_k
+\eea
+
+
+
+\noi{\bf 3}
+\\
+\[
+\frac{-x}{1-x}-\ln(1-x)=h\left(\frac{1}{1-x}\right)\leq 0
+\]
+\[
+\ln(1-\bar{c}\epsilon_k) \geq \frac{-\bar{c}\epsilon_k}{1-\bar{c}\epsilon_k} \geq -2\bar{c}\epsilon_k
+\]
+\bea \label{6.59}
+\ln( \tilde{m_k} )\geq \ln(1-\bar{c}\epsilon_k) \geq -2\bar{c}\epsilon_k \geq -2c\epsilon_k
+\eea
+\bea \label{6.60}
+0<\psi(\tilde{B_{k+1}}) \leq \psi(\tilde{B_{k}}) + 3c\epsilon_k + \ln(cos^2\tilde{\theta_k} )+ \left[ 1- \frac{\tilde{q_k}}{cos^2\tilde{\theta_k}} + \ln\left(\frac{\tilde{q_k}}{cos^2\tilde{\theta_k}}\right) \right]
+\eea
+\[
+\sum\limits_{j=0}^\infty \left(\ln\left(\frac{1}{cos^2\tilde{\theta_j}}\right) - \left[ 1- \frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} + \ln\left(\frac{\tilde{q_j}}{cos^2\tilde{\theta_j}}\right) \right]\right) \leq \psi(\tilde{B_0})+3c\sum\limits_{j=0}^\infty \epsilon_j < +\infty
+\]
+\[
+\lim_{j\to\infty} \ln\left( \frac{1}{cos^2\tilde{\theta_j}}\right)=0, \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+\lim_{j\to\infty} \left( 1- \frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} + \ln\left(\frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} \right)\right) = 0
+\]
+\bea \label{6.61}
+\lim_{j\to\infty} cos\tilde{\theta_j}=1,  \ \ \ \ \ \ \ \ 
+\lim_{j\to\infty} \tilde{q_j}=1
+\eea
+
+
+
+\noi{\bf 4}
+\\
+
+
+\beas
+\frac{ \| G_{*} ^{-1/2} (B_k - G_{*}) s_k \|^2 }{ \|  G_{*} ^{1/2} s_k \|} =& \frac{ \| (\tilde{B}_{k} - I) \tilde{s}_{k} \|^2 }{ \|  \tilde{s}_{k} \|^2} \\
+\ =& \frac{ \| \tilde{B}_{k} \tilde{s}_{k} \|^2 - 2 \tilde{s}_{k}^T \tilde{B}_{k} \tilde{s}_{k} + \tilde{s}_{k}^T \tilde{s}_{k} }{ \tilde{s}_{k}^T  \tilde{s}_{k}} \\
+\ =& \frac{\tilde{q}_{k} ^2 }{ cos \tilde{\theta}_{k}^2 } - 2 \tilde{q}_{k} + 1.\\ \\ 
+ \therefore\ & \lim_{k \to \infty} \frac{\| (B_k - G_{*}) s_k \|}{\| s_k \|} = 0
+\eeas
+
+
+\end{document}
+
+

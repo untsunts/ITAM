@@ -1,0 +1,31 @@
+ Nombre del problema                      mwright  
+ Numero de variables                       5 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             9.200000000000000e+01 
+ Norma de las restricciones en el punto inicial              2.24e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    6.25e+01 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     5.01811243e+01     6.59e-01      9.26e+00   1.00e+00   5.15e+01  
+    2     3.74865339e+01     4.23e-01      1.83e+01   1.00e+00   5.15e+01  
+    3     4.06253201e+01     1.79e-01      3.27e+01   1.00e+00   5.15e+01  
+    4     3.18829226e+01     2.71e-01      1.58e+01   1.00e+00   5.15e+01  
+    5     2.71126272e+01     2.77e-01      1.19e+01   2.50e-01   5.15e+01  
+    6     2.31408005e+01     2.80e-01      7.97e+00   1.00e+00   5.15e+01  
+    7     2.49175030e+01     9.50e-03      4.91e-01   1.00e+00   5.15e+01  
+    8     2.49786220e+01     3.18e-05      3.03e-03   1.00e+00   5.15e+01  
+    9     2.49788095e+01     1.45e-09      1.44e-07   1.00e+00   5.15e+01  
+
+
+ Minimizador local del modelo: 
+ 	  -1.29459852e+00 
+ 	   2.46307744e+00 
+ 	   1.21263710e+00 
+ 	  -1.54488049e+00 
+ 	  -1.64161580e-01 
+
+ tiempo de programa :   3.12e-03

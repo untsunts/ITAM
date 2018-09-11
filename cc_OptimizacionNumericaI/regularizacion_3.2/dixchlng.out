@@ -1,0 +1,35 @@
+ Nombre del problema                      dixchlng  
+ Numero de variables                      10 
+ Numero de restricciones                   5 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             3.134654608731180e+05 
+ Norma de las restricciones en el punto inicial              1.00e-05 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.36e+05 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     6.37836797e+04     4.58e-01      2.85e+04   1.00e+00   3.16e+03  
+    2     1.36420677e+04     5.40e-01      8.29e+03   1.00e+00   3.16e+03  
+    3     3.66285465e+03     3.76e-01      2.23e+03   1.00e+00   3.16e+03  
+    4     2.68115289e+03     3.72e-01      1.33e+03   5.00e-01   3.16e+03  
+    5     2.25165285e+03     3.17e-01      3.78e+02   1.00e+00   3.16e+03  
+    6     2.49523327e+03     4.43e-02      1.58e+02   1.00e+00   3.16e+03  
+    7     2.47180281e+03     8.57e-05      5.25e+00   1.00e+00   3.16e+03  
+    8     2.47189520e+03     4.60e-06      3.99e-03   1.00e+00   3.16e+03  
+
+
+ Minimizador local del modelo: 
+ 	  -8.66138069e-01 
+ 	  -1.15455034e+00 
+ 	   1.19025688e+00 
+ 	   8.40154773e-01 
+ 	  -8.09118611e-01 
+ 	  -1.23591268e+00 
+ 	   1.14103810e+00 
+ 	   8.76394920e-01 
+ 	  -7.08214078e-01 
+ 	  -1.41199601e+00 
+
+ tiempo de programa :   3.12e-03

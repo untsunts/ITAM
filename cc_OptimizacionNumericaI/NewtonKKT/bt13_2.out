@@ -1,0 +1,20 @@
+ Nombre del problema                      bt13  
+ Numero de variables                       5 
+ Numero de restricciones                   1 
+ Numero maximo de iteraciones            1000 
+ Tolerancia                               1.00e-06 
+
+ Objetivo en el punto inicial             2.280000000000000e+02 
+ Norma de las restricciones en el punto inicial              5.18e+04 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.00e+00 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     1.13367192e+02     1.28e+04      2.91e-01    
+    2     5.62126570e+01     3.13e+03      3.81e-01    
+    3     2.73473218e+01     7.20e+02      5.32e-01    
+    4     1.20678721e+01     1.13e+02      9.98e-01    
+    5     2.89704938e-01     8.66e+01      4.05e+00    
+
+ inercia incorrecta
+ tiempo de programa :   1.54e-03

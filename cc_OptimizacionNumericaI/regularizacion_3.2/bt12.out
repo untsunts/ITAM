@@ -1,0 +1,25 @@
+ Nombre del problema                      bt12  
+ Numero de variables                       5 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             4.999754420000000e+00 
+ Norma de las restricciones en el punto inicial              7.61e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.67e+00 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     6.18999748e+00     3.65e+00      9.06e-01   1.00e+00   2.28e+00  
+    2     6.18812419e+00     1.99e-02      1.69e-03   1.00e+00   2.28e+00  
+    3     6.18811881e+00     5.52e-06      7.64e-07   1.00e+00   2.28e+00  
+
+
+ Minimizador local del modelo: 
+ 	   2.47524752e+01 
+ 	   2.47524765e-01 
+ 	   0.00000000e+00 
+ 	   2.42434794e+01 
+ 	   4.76995604e+00 
+
+ tiempo de programa :   1.37e-03

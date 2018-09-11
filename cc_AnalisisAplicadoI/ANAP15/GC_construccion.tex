@@ -1,0 +1,248 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+%\usepackage[spanish]{babel}
+\textwidth     =  7.0in
+\textheight    =  9.0in
+\oddsidemargin = -0.2in
+\topmargin     = -.5in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath, amsthm, amssymb, latexsym}
+\newtheorem{lma}{Lema}
+\newtheorem{thm}{Teorema}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\ul}{\underline}
+
+%\input{header}
+%
+\newcommand{\noi}{\noindent}
+\newcommand{\pa}{\partial}
+%
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+%
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+%
+\newcommand{\non}{\nonumber}
+%
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+%
+\newcommand{\bee}{\begin{enumerate}}
+\newcommand{\eee}{\end{enumerate}}
+%
+\newcommand{\bed}{\begin{description}}
+\newcommand{\edd}{\end{description}}
+%
+\newcommand{\bec}{\begin{center}}
+\newcommand{\edc}{\end{center}}
+%
+\begin{document}
+\title{Gradiente conjugado}
+\author{An\'alisis aplicado. Proyecto.}
+\date{26 de noviembre, 2012}
+%\maketitle
+
+\centerline{\large \bf An\'alisis aplicado.}
+\centerline{\large \bf Gradiente conjugado y proyecto.}
+\centerline{\bf 17 de febrero, 2015. JL Morales, ITAM}
+
+\subsection*{Gradiente conjugado}
+El m\'etodo de gradiente conjugado (GC) tiene propiedades matem\'aticas y computacionales que lo convierten en una herramienta muy vers\'atil para resolver problemas  en una amplia variedad de aplicaciones. 
+
+La principal motivaci\'on consiste en dise\~nar un m\'etodo para resolver eficientemente el problema cuadr\'atico
+\bea  \label{opt}
+  \stackrel{\mbox{minimizar}}{ {}_x } & & \raisebox{1.0ex}{$\displaystyle q(x) = \frac{1}{2} x^TAx -b^Tx$,}
+\eea
+en donde $A$ es una matriz sim\'etrica positiva definida de $n \times n$. El problema anterior es equivalente a resolver el  sistema de ecuaciones lineales $Ax = b$. Una de las principales virtudes del m\'etodo de GC es que alivia los conocidos inconvenientes del m\'etodo de m\'aximo descenso. En aritm\'etica finita,  GC parte de una aproximaci\'on inicial y termina con la soluci\'on exacta en no m\'as de $n$ iteraciones; en este sentido se le considera como un m\'etodo directo. En  aritm\'etica finita, debido a la acumulaci\'on de errores por redondeo, el m\'etodo podr\'{\i}a no terminar en $n$ pasos y por lo tanto se le considera un m\'etodo iterativo.
+
+ Los m\'etodos iterativos constituyen una alternativa muy atractiva con respecto a los m\'etodos directos. Espec\'{\i}ficamente, cuando se trata de resolver una sucesi\'on finita de sistemas cercanamente relacionados 
+\bea
+   A_j x = b_j, \quad j=1, \quad A_{j+1} \approx A_j, \quad j=1,\ldots, N-1 \label{sucesion}
+\eea
+ $x_j^*$, la soluci\'on del sistema $A_j x = b_j$, se puede utilizar como punto inicial para resolver el sistema
+$A_{j+1} x = b_{j+1}$. En estos casos la  soluci\'on de cada sistema se alcanza en unas cuantas iteraciones.
+
+Si cada sistema de la  sucesi\'on (\ref{sucesion}) se resolviera con el m\'etodo de Cholesky se requerir\'{\i}an  ${\cal O}(Nn^3)$ operaciones para resolver los $N$ sistemas.
+
+Antes de iniciar la construcci\'on de GC necesitamos algunas definiciones.
+\begin{enumerate}
+ \item Al vector  $r(x) = b - Ax$ lo denotamos como el {\em residuo} en $x$. Notar que $\nabla q(x) = Ax -b= -r(x)$.
+ \item Los elementos de un conjunto ${\cal C} = \{d_0, d_1, \ldots, d_k \}$ de vectores en $\real^n$ son $A$-ortogonales si 
+       \[
+           d_i^TAd_j = 0, \quad i\ne j,
+       \]
+ \end{enumerate}
+Consideremos al vector $x_0$ una aproximaci\'on inicial a la soluci\'on $x^*$. Entonces es inmediato observar que  $r(x_0)$ es  una direcci\'on de descenso para el problema de optimizaci\'on (\ref{opt}); por lo tanto podemos obtener el iterando
+\[
+   x_1 = x_0 + \alpha_0 d_0,
+\]
+en donde $d_0 = r_0$; el escalar $\alpha_0$ se puede obtener resolviendo el problema unidimensional
+\beas
+  \stackrel{ \mbox{minimizar}} { {}_\alpha  } & & \raisebox{1.0ex}{$q(x_0 + \alpha d_0),$}
+\eeas
+es decir
+\[
+    \nabla q(x_0 + \alpha_0 d_0)^Td_0 =  - r_1^T d_0  = 0, \quad  r_1^Tr_0 = 0
+\]
+y por lo tanto
+\[
+   \alpha_0 =  \frac{ -\nabla q(x_0)^T d_0 }{d_0^T A d_0} = \frac{r_0^Td_0}{d_0^TAd_0}
+\]
+El iterando $x_2$ se calcula con la direcci\'on 
+\[
+  d_1 = r_1 - \beta_1 d_0,  \quad  \beta_1 =  \frac{r_1^TAd_0}{d_0^TAd_0}
+\]
+obtenida a partir de $r_1$ y $d_0$ mediante $A$-ortogonalizaci\'on de Gram-Schmidt. %Observar que $d_1$ 
+%est\'a compuesta por la direcci\'on de m\'aximo descenso y una fracci\'on de la direcci\'on previa $d_0$. 
+\[
+   x_2 = x_1 + \alpha_1 d_1, 
+\]
+en donde $\alpha_1$ se obtiene resolviendo 
+\beas
+  \stackrel{ \mbox{minimizar}} { {}_\alpha  } & & \raisebox{1.0ex}{$q(x_1 + \alpha d_1),$}
+\eeas
+es decir
+\[
+   \nabla q(x_1 + \alpha_1 d_1)^Td_1 =  -r_2^Td_1 = 0
+\]
+y por lo tanto
+\[
+  \alpha_1 = \frac{ -\nabla q(x_1)^T d_1 }{d_1^T A d_1} = \frac{r_1^Td_1}{d_1^TAd_1}
+\]
+%De la expresi\'on para $d_1$ podemos deducir de inmediato que
+%\[
+%   r_1^Td_1 = r_1^Tr_1 - \beta_1r_1^Td_0 \Longrightarrow  r_1^Td_1 = r_1^Tr_1.
+%\]
+%Ahora podemos estudiar las propiedades de $r_2$; de la expresi\'on para $d_1$ tenemos
+%\[
+%    r_2^Td_1 = r_2^T( r_1 - \beta_1 d_0 ) = r_2^Tr_1 - \beta_1 r_2^T d_0. 
+%\]
+Vamos a probar que $r_2$ tambi\'en es ortogonal a $d_0$; de la definici\'on del residuo
+\[
+    r_2 = b - Ax_2 = b - A(x_1 + \alpha_1d_1) = r_1 - \alpha_1 Ad_1
+\]
+premultiplicando por $d_0$ tenemos
+\[
+   d_0^Tr_2 = d_0^Tr_1 - \alpha_1 d_0^T Ad_1 = r_0^Tr_1 - \alpha_1 d_0^T Ad_1 = 0.
+\]
+Por lo tanto $r_2$ es ortogonal a las direcciones anteriores.  Nos queda por investigar el producto $r_2^Tr_1$ 
+\[
+   r_2^Td_1 = 0 = r_2^T(r_1 - \beta_1d_0) =  r_2^Tr_1 - r_2^Td_0 
+\]
+de donde $r_2^Tr_1 = 0$.
+
+
+%sabemos que $r_2^Td_1 = 0$ y que $r_2^T d_0 = 0$, por lo tanto $r_2^Tr_1 = 0$.
+
+En conclusi\'on tenemos que el conjunto $\{r_0, r_1, r_2 \}$ es ortogonal y por lo tanto podemos construir un vector $A$-ortogonal
+\[
+   d_2 = r_2 - \frac{r_2^TAd_0}{d_0^TAd_0} d_0 - \beta_2 d_1
+\]
+Utilizando la expresi\'on 
+\[
+   x_1 = x_0 + \alpha_0 d_0
+\]
+es f\'acil probar que el producto $r_2^TAd_0$ se anula. Premultiplicando la expresi\'on anterior por $A$ tenemos
+\[
+    A(x_1 - x_0) =  \alpha_0 Ad_0 = r_0 - r_1 \Longrightarrow  \alpha_0 r_2^TAd_0 = r_2^Tr_0 -r_2^Tr_1 = 0.
+\]
+Por lo tanto
+\[
+   d_2 = r_2 - \beta_2 d_1, \quad  \beta_2 = \frac{r_2^TAd_1}{d_1^TAd_1}.
+\]
+En resumen, tenemos que los residuos $r_0,r_1,r_2$ forman un conjunto ortogonal, y que las direcciones $d_0, d_1, d_2$ forman un conjunto $A$-ortogonal. Un argumento inductivo evidente permite formular una versi\'on preliminar del algoritmo de GC
+
+
+\subsection*{Proyecto}
+
+\begin{enumerate}
+ \item  Formular el paso inductivo en la construcci\'on del m\'etodo de GC
+
+\begin{quotation}
+\begin{description}
+ \item 
+ \item Sea $x_0$ una aproximaci\'on inicial, $d_0 \leftarrow r_0$, \quad $k \leftarrow 0$
+ \item Repetir mientras $r_k \ne 0$
+  \begin{description}
+   \item  $\displaystyle \alpha_k    \leftarrow  \frac{r_k^Td_k}{d_k^TAd_k} $
+   \item  $x_{k+1}     \leftarrow  x_k + \alpha_k d_k         $    
+   \item  $r_{k+1}     \leftarrow  r_k - \alpha_k Ad_k        $    
+   \item  $\displaystyle \beta_{k+1} \leftarrow  \frac{r_{k+1}^TAd_k}{d_k^TAd_k} $ 
+   \item  $d_{k+1}     \leftarrow  r_{k+1} - \beta_{k+1}d_k        $
+   \item  $k           \leftarrow  k+1 $
+  \end{description}
+\end{description}
+\end{quotation}
+
+ \item Probar los resultados que dan origen al algoritmo computacional de GC
+
+\begin{quotation}
+\begin{description}
+ \item 
+ \item Sea $x_0$ una aproximaci\'on inicial, $d_0 \leftarrow r_0$, \quad $k \leftarrow 0$
+ \item Repetir mientras $r_k \ne 0$
+  \begin{description}
+    \item $\displaystyle \alpha_k \leftarrow \frac{r_k^Tr_k}{d_k^TAd_k}$
+    \item  $x_{k+1} \leftarrow x_k + \alpha_k d_k$
+    \item $r_{k+1} \leftarrow r_k - \alpha_k Ad_k$
+    \item $\displaystyle \beta_{k+1} \leftarrow \frac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k}$
+    \item $d_{k+1} \leftarrow r_{k+1} + \beta_{k+1}d_k$
+    \item $k \leftarrow k+1$
+  \end{description}
+\end{description}
+\end{quotation}
+
+ \item Escribir una versi\'on computacional de GC que se detenga cuando ocurra una de las siguientes situaciones: a) $||r_k|| \le TOL_1$, b) el n\'umero de iteraciones exceda un l\'{\i}mite prestablecido; c) $d_k^TAd_k \le TOL_2$.
+ \item Estudiar la prueba de convergencia cuadr\'atica del m\'etodo de Newton (Nocedal \& Wright, p\'agina 44). Justificar los pasos omitidos.
+ \item Estudiar las propiedades del m\'etodo de GC (Nocedal \& Wright, Teoremas 5.1-5.5). Notar que el residuo est\'a definido como $r(x) = Ax -b$. Justificar los pasos omitidos.
+ \item El m\'etodo de GC tiene una propiedad muy \'util en optimizaci\'on. El problema  (\ref{opt}) adopta la forma
+ \bea  \label{opt_mod}
+  \stackrel{\mbox{minimizar}}{ {}_p } & & \raisebox{1.0ex}{$\displaystyle  \frac{1}{2} p^T \nabla^2 f(x) p +  \nabla f(x)^Tp$,}
+ \eea
+ en donde se han omitido los \'{\i}ndices por claridad. Cada paso del m\'etodo de GC requiere de un producto matriz-vector $\nabla^2 f(x) d_k$. Investiga c\'omo aproximar el producto anterior mediante diferencias del gradiente. Al m\'etodo resultante se le conoce como m\'etodo de Newton libre de Hessiana.
+ \item NOTA: 
+ 
+ En la clase del 17 de febrero escrib\'{\i} en el pizarr\'on la versi\'on de GC para el m\'etodo de Newton. Hay una inconsistencia en la notaci\'on; la versi\'on correcta es la siguiente:
+ 
+ El sistema por resolver en cada iteraci\'on del m\'etodo de Newton es
+ \[
+    \nabla^2 f(x) p^N = -\nabla f(x),
+ \]
+ el m\'etodo de GC aproxima a $p^N$ por medio de la sucesi\'on 
+ \[
+   \left \{ p_0,  p_1 \ldots,  p_{n-1} \right \}.
+ \]
+ Observar que los vectores $p_k$ tienen el papel de los vectores $x_k$ en los dos algoritmos anteriores, es decir las aproximaciones $p_k$ se actualizan como sigue
+ \[
+    p_{k+1} = p_k + \alpha_k d_k.
+ \] 
+ El m\'etodo inicia con  $p_0 = 0$, de donde es inmediato concluir que $r_0 = -\nabla f(x)$; por lo tanto,  la primera direcci\'on para GC es la direcci\'on opuesta al gradiente
+\[
+   d_0 = - \nabla f(x).
+\]
+Si el producto $d_0^T \nabla^2 f(x) d_0$ resultara negativo o cero, el m\'etodo terminar\'{\i}a con
+\[ 
+  p = -\nabla f(x).
+\]
+En iteraciones subsecuentes GC terminar\'{\i}a con la aproximaci\'on $p_k$  si $||r_k|| < TOL$, o bien 
+\[
+     d_{k+1}^T \nabla^2 f(x) d_{k+1} \le 0. 
+\]
+
+
+\end{enumerate}
+
+\enddocument
+
+
+
+

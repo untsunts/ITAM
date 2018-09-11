@@ -1,0 +1,13 @@
+ Nombre del problema                      bt7  
+ Numero de variables                       5 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones            1000 
+ Tolerancia                               1.00e-06 
+
+ Objetivo en el punto inicial             9.090000000000000e+02 
+ Norma de las restricciones en el punto inicial              4.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    2.48e+03 
+
+ inercia incorrecta  
+
+ tiempo de programa :   2.71e-03

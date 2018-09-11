@@ -1,0 +1,29 @@
+ Nombre del problema                      bt1  
+ Numero de variables                       2 
+ Numero de restricciones                   1 
+ Numero maximo de iteraciones            1000 
+ Tolerancia                               1.00e-06 
+
+ Objetivo en el punto inicial             1.989000000000000e+04 
+ Norma de las restricciones en el punto inicial              1.99e+02 
+ Norma del gradiente de la Lagrangiana en el punto inicial    2.83e+03 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     2.49351000e+04     2.50e+02      3.93e-01    
+    2     7.96616133e+03     7.98e+01      2.00e-01    
+    3     2.25406343e+03     2.26e+01      2.88e-01    
+    4     6.83954835e+02     6.87e+00      3.14e-01    
+    5     2.29649488e+02     2.31e+00      2.87e-01    
+    6     7.07918370e+01     7.21e-01      1.92e-01    
+    7     1.30060317e+01     1.41e-01      7.60e-02    
+    8    -6.71738565e-02     9.37e-03      9.12e-03    
+    9    -9.92700469e-01     7.34e-05      8.81e-05    
+   10    -9.99999317e-01     6.86e-09      6.97e-09    
+
+
+ Minimizador local del modelo: 
+ 	   1.00000000e+00 
+ 	   6.24857910e-09 
+
+ tiempo de programa :   2.00e-01

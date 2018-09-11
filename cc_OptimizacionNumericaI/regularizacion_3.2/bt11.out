@@ -1,0 +1,29 @@
+ Nombre del problema                      bt11  
+ Numero de variables                       5 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             1.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              1.18e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.41e+00 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     1.00173459e+00     6.63e+00      2.92e+00   5.00e-01   9.91e-01  
+    2     1.30081843e+00     1.99e+00      3.11e+00   1.00e+00   9.91e-01  
+    3     7.45316770e-01     4.96e-01      7.40e-01   1.00e+00   9.91e-01  
+    4     7.58137827e-01     8.95e-02      3.25e-01   1.00e+00   9.91e-01  
+    5     8.23687206e-01     2.40e-03      4.29e-02   1.00e+00   9.91e-01  
+    6     8.24874046e-01     1.59e-05      1.64e-04   1.00e+00   9.91e-01  
+    7     8.24891777e-01     7.52e-10      2.66e-09   1.00e+00   1.24e+00  
+
+
+ Minimizador local del modelo: 
+ 	   9.65300462e-01 
+ 	   3.51043816e-01 
+ 	   1.26757596e+00 
+ 	  -1.36415766e-02 
+ 	  -7.32424041e-01 
+
+ tiempo de programa :   2.23e-03

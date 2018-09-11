@@ -1,0 +1,26 @@
+ Nombre del problema                      hs079  
+ Numero de variables                       5 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             1.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              7.76e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    2.00e+00 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     1.30939562e-01     1.25e+00      2.50e-01    
+    2     8.12253177e-02     6.88e-02      1.78e-02    
+    3     7.87856301e-02     2.55e-04      9.19e-05    
+    4     7.87768210e-02     4.70e-09      4.20e-09    
+
+
+ Minimizador local del modelo: 
+ 	   1.19112746e+00 
+ 	   1.36260317e+00 
+ 	   1.47281793e+00 
+ 	   1.67908143e+00 
+ 	   1.63501662e+00 
+
+ tiempo de programa :   1.37e-03

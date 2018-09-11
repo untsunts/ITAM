@@ -1,0 +1,30 @@
+ Nombre del problema                      hs100lnp  
+ Numero de variables                       7 
+ Numero de restricciones                   2 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             7.140000000000000e+02 
+ Norma de las restricciones en el punto inicial              1.30e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.80e+01 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     6.80452091e+02     5.82e+00      1.69e+01   1.00e+00   1.08e+00  
+    2     6.80333327e+02     2.96e-01      8.74e-01   1.00e+00   1.08e+00  
+    3     6.80432695e+02     1.48e-01      4.37e-01   5.00e-01   1.08e+00  
+    4     6.80625594e+02     1.22e-02      2.87e-02   1.00e+00   1.48e+00  
+    5     6.80630025e+02     8.84e-05      2.57e-04   1.00e+00   1.48e+00  
+    6     6.80630057e+02     7.28e-09      2.12e-08   1.00e+00   1.48e+00  
+
+
+ Minimizador local del modelo: 
+ 	   2.33049937e+00 
+ 	   1.95137237e+00 
+ 	  -4.77541397e-01 
+ 	   4.36572623e+00 
+ 	  -6.24486971e-01 
+ 	   1.03813102e+00 
+ 	   1.59422671e+00 
+
+ tiempo de programa :   2.45e-03

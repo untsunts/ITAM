@@ -1,0 +1,13 @@
+ Nombre del problema                      eigena2  
+ Numero de variables                     110 
+ Numero de restricciones                  55 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             2.850000000000000e+02 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    4.19e+02 
+
+ inercia incorrecta  
+
+ tiempo de programa :   7.59e-03

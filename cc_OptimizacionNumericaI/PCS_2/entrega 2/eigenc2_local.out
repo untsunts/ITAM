@@ -1,0 +1,13 @@
+ Nombre del problema                      eigenc2  
+ Numero de variables                     462 
+ Numero de restricciones                 231 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             1.007100000000000e+04 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    6.55e+03 
+
+ inercia incorrecta  
+
+ tiempo de programa :   7.35e-02

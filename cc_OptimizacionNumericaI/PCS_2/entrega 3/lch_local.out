@@ -1,0 +1,13 @@
+ Nombre del problema                      lch  
+ Numero de variables                     600 
+ Numero de restricciones                   1 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             2.586969011420049e+05 
+ Norma de las restricciones en el punto inicial              1.03e-14 
+ Norma del gradiente de la Lagrangiana en el punto inicial    3.68e+04 
+
+ inercia incorrecta  
+
+ tiempo de programa :   6.21e-03

@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+\usepackage{latexsym}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{framed}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{caption}
+
+\setlength\parindent{24pt}
+\textwidth     =  6.5in
+\textheight    =  8.2in
+\oddsidemargin =  -0.2in
+\topmargin     = -0.4in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\ul}{\underline}
+
+%\input{header}
+%
+\newcommand{\noi}{\noindent}
+\newcommand{\pa}{\partial}
+%
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+%
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+%
+\newcommand{\non}{\nonumber}
+%
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+%
+\newcommand{\bee}{\begin{enumerate}}
+\newcommand{\eee}{\end{enumerate}}
+%
+\newcommand{\bed}{\begin{description}}
+\newcommand{\edd}{\end{description}}
+%
+\newcommand{\bec}{\begin{center}}
+\newcommand{\edc}{\end{center}}
+%
+\renewcommand{\thefootnote}{\roman{footnote}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\[
+\frac{-x}{1-x}-\ln(1-x)=h\left(\frac{1}{1-x}\right)\leq 0
+\]
+\[
+\ln(1-\bar{c}\epsilon_k) \geq \frac{-\bar{c}\epsilon_k}{1-\bar{c}\epsilon_k} \geq -2\bar{c}\epsilon_k
+\]
+\bea \label{6.59}
+\ln( \tilde{m_k} )\geq \ln(1-\bar{c}\epsilon_k) \geq -2\bar{c}\epsilon_k \geq -2c\epsilon_k
+\eea
+\bea \label{6.60}
+0<\psi(\tilde{B_{k+1}}) \leq \psi(\tilde{B_{k}}) + 3c\epsilon_k + \ln(cos^2\tilde{\theta_k} )+ \left[ 1- \frac{\tilde{q_k}}{cos^2\tilde{\theta_k}} + \ln\left(\frac{\tilde{q_k}}{cos^2\tilde{\theta_k}}\right) \right]
+\eea
+\[
+\sum\limits_{j=0}^\infty \left(\ln\left(\frac{1}{cos^2\tilde{\theta_j}}\right) - \left[ 1- \frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} + \ln\left(\frac{\tilde{q_j}}{cos^2\tilde{\theta_j}}\right) \right]\right) \leq \psi(\tilde{B_0})+3c\sum\limits_{j=0}^\infty \epsilon_j < +\infty
+\]
+\[
+\lim_{j\to\infty} \ln\left( \frac{1}{cos^2\tilde{\theta_j}}\right)=0, \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+\lim_{j\to\infty} \left( 1- \frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} + \ln\left(\frac{\tilde{q_j}}{cos^2\tilde{\theta_j}} \right)\right) = 0
+\]
+\bea \label{6.61}
+\lim_{j\to\infty} cos\tilde{\theta_j}=1,  \ \ \ \ \ \ \ \ 
+\lim_{j\to\infty} \tilde{q_j}=1
+\eea
+
+
+
+ 
+\end{document}

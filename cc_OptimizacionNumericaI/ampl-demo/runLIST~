@@ -1,0 +1,76 @@
+#!/usr/bin/perl -w
+#
+#------------------------------------------------------------------
+#   
+#     running a list of problems 
+#     j-l morales  
+#     ITAM   2015
+#
+#------------------------------------------------------------------
+#
+#
+use FileHandle;
+use IPC::Open2;
+
+$filename = "LIST_small";
+
+  $RESJ = "RES";
+  mkdir($RESJ, 0750);
+ 
+  open LIST, $filename or die "Couldn't open file $filename\n";
+
+#     Now read and process one line at a time
+#------------------
+  $pid = open2(*RESPONSE, *MATLAB,"matlab -nojvm");
+  $pid or die;
+#------------------
+while( <LIST> )
+{
+    chomp;
+    if ( $_ eq "" ) { print "\n   *** End of the list *** \n"; last; }
+#
+    @names = split;
+    $name = shift @names;
+    print "  Processing $name  \n";
+
+#----
+    open AMPL, "|ampl > /dev/null";
+
+    print AMPL &q(<<"    ENDAMPL");
+    : reset;
+    : model /Users/jmorales/AMPL/cute/$name.mod;
+    : write g$name;
+    ENDAMPL
+    close(AMPL);
+        
+    print MATLAB &q(<<"    ENDMATLAB");
+    : path(path,'/Users/jmorales/bin');
+    : use_ampl_stub $name.nl;
+    : [x_op,lam_op] = sqp_mf ( 'amplpnt', 'amplstub', '$name', 200 );
+    : 
+    : disp( 'Next problem' );
+    :
+    ENDMATLAB
+
+    while( $got = <RESPONSE> ) {
+	last if $got =~ /Next problem/;
+    }
+        
+    system("mv $name.out $RESJ/$name.out");
+    system("rm $name.nl");
+
+#----
+}    
+
+close MATLAB or die $!;
+close RESPONSE or die $!;
+close LIST or die $!;
+#                            
+
+sub q{
+    my $string  = $_[0];
+    $string =~ s/^\s*://gm;
+    #$string =~ s{ (.*)\*/\s*$ }{ sprintf "%-73s*/\n", $1 }gmex;
+    
+    return $string;
+}

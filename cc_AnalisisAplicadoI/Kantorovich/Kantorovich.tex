@@ -1,0 +1,117 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+%\usepackage[spanish]{babel}
+\textwidth     =  7.0in
+\textheight    =  9.0in
+\oddsidemargin = -0.2in
+\topmargin     = -.5in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath, amsthm, amssymb, latexsym}
+\newtheorem{lma}{Lema}
+\newtheorem{thm}{Teorema}
+
+
+\usepackage{graphicx}% "demo" to make example compilable without .png-file
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\ul}{\underline}
+
+%\input{header}
+%
+\newcommand{\noi}{\noindent}
+\newcommand{\pa}{\partial}
+%
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+%
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+%
+\newcommand{\non}{\nonumber}
+%
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+%
+\newcommand{\bee}{\begin{enumerate}}
+\newcommand{\eee}{\end{enumerate}}
+%
+\newcommand{\bed}{\begin{description}}
+\newcommand{\edd}{\end{description}}
+%
+\newcommand{\bec}{\begin{center}}
+\newcommand{\edc}{\end{center}}
+%
+\begin{document}
+
+\noindent {\bf  Santiago Novoa P\'erez  \it 000125089}\\
+
+\noindent {\bf  Desigualdad de Kantorovich:} Sea H una matriz sim\'etrica definida positiva de dimensi\'on nxn, para cualquier vector $x$ se satisface: \\
+	
+	 \[
+              	\frac{(x^Tx)^2}{(x^THx)(x^TH^{-1}x)} \ge \frac{4\lambda_{min}\lambda_{max}}{(\lambda_{min}+\lambda_{max})^2} = \text{L.D.} \\
+        	\]
+	\noindent \\ {}	
+	\noindent donde $\lambda_{min}$ y $\lambda_{max}$ son, respectivamente, el valor propio menor y mayor de H.\\
+
+	\noindent \\ {\bf Prueba} \\
+	
+	\noindent Se utilizaran los siguientes resultados:
+	\begin{enumerate}
+	\item $\forall H$ matriz sim\'etrica $\exists P$  ortogonal tal que $H = P^TDP$. Sea $x=Py$, entonces $y^THy = y^TP^TDPy = x^TDx = \sum_{i=1}^n \lambda_i x_i^2$ con $\lambda_i$ los valores propios de $H$(y de $D$).\
+	\item Si $\lambda_i$'s son los valores propios de $H$ no-singular (por ejemplo, S.P.D.), entonces $\frac{1}{\lambda_i}$'s son los valores propios de $H^{-1}$. Adem\'as, $y^TH^{-1}y = x^TD^{-1}x = \sum_{i=1}^n \frac{x_i^2}{\lambda_i}$\
+	\item Sea f una funci\'on convexa ($\frac{d^2 f}{d x^x} > 0 $ si existe o $f(tx + (1-t)y) \le t f(x) + (1-t)f(y) \ \ \forall t \in \left[0,1\right]$), entonces se cumple que $f(z) \le \sum_{i=1}^n \alpha_i f(x_i)$ donde $z$ es la combinaci\'on convexa de $x_i$ $(\sum_{i=1}^n \alpha_i x_i)$ \
+	\item $x^* = \sum_{i=1}^n \alpha_i x_i$ es una combinaci\'on convexa de $x_i$'s si $\alpha_i \in \left[0,1\right]$ y $\sum_{i=1}^n \alpha_i = 1$ \
+	\item Si $H$ es S.P.D, todos sus valores propios son mayores que cero, adem\'as, $\lambda_i = t\lambda_1 + (1-t)\lambda_n$ con alg\'un $t \in \left[0,1\right]$, y $\lambda_1, \lambda_n$ los valores propios m\'as chicos y m\'as grandes respectivamente. \\ \\ \\
+	
+	\noindent Sean $y \in \mathbb{R}^n$ y $H \in \mathbb{R}^{n\text{x}n}$ tales que $H$ es S.P.D. Por (1) y (2) se tiene que: $$L.I. = \frac{(y^Ty)^2}{(y^THy)(y^TH^{-1}y)} = \frac{(x^Tx)^2}{(x^TDx)(x^TD^{-1}x)} = \frac{(\sum_{i=1}^n x_i^2)^2}{(\sum_{i=1}^n x_i^2 \lambda_i )(\sum_{i=1}^n\frac{x_i^2}{\lambda_i})}$$
+	
+	\noindent Por comodidad y para facilitar la manipulaci\'on algebr\'rica, se tomar\'a la siguiente expresi\'on: $$L.I. = {\frac{\sum x_i^2}{\sum \lambda_i x_i^2}}/{\frac{\sum \frac{x_i^2}{\lambda_i}}{\sum x_i^2}}$$
+	\noindent Por el mismo motivo, se define $ \xi_{i} = \frac{x_{i}^{2}}{\sum_{i=1}^{n}x{i}^{2}}$. Notar que por (4) $\xi_i$ forma una combinaci\'on convexa de $\lambda_i$'s para el numerador y otra de $\frac{1}{\lambda_i}$'s para el denominador. $$L.I. = \left[\sum \frac{1}{\xi_i \lambda_i}\right]/\left[\sum \frac{\xi_i}{\lambda_i}\right]$$ 
+	
+	{\bf Nota:} Lo que se busca con esto es encontrar una expresi\'on de L.I. tal que L.I $\le$ L.D. Para hacer esto, se pasar\'a por ecuaciones m\'as simples intermedias, empezando por funciones convexas. \\ \\
+	 \noindent Sea $$f(\lambda): \left[\lambda_1, \lambda_n\right] \longrightarrow \mathbb{R}$$ la funci\'on $$f(\lambda) = \frac{1}{\lambda}$$
+	 
+	 \noindent Es f\'acil notar que f es convexa en $\mathbb{R}^{+}$. Por lo anterior y por (5), f es convexa en $\left[\lambda_1,\lambda_n\right]$. Por (3) se tiene que $f(z) \le \sum \alpha_i f(x_i)$. En particular, para $\lambda = \sum \xi_i \lambda_i$.
+	\noindent Entonces, $f(\lambda) \le \sum \xi_i f(\lambda_i)$. Por (5), $f(\lambda_i) = f(t \lambda_1 + (1-t)\lambda_n) \implies f(\lambda)\le \sum \xi_i (\frac{t}{\lambda_i} + \frac{(1-t)}{\lambda_n})$
+	
+	\noindent Lo que se acaba de lograr es encontrar una expresi\'on que va a ayudar a simplificar el L.I. Es f\'acil notar que, para $\lambda_i$ , t toma el siguiente valor: \\
+	\begin{align*}
+	\lambda_i &= t \lambda_1 + (1-t)\lambda_n \\ \\
+	\iff t &= \frac{\lambda_i - \lambda_n}{\lambda_1 - \lambda_n} \\ \\
+	\therefore f(\lambda) \ &{\le} \  \sum\xi_i \left[\frac{\lambda_i - \lambda_n}{\lambda_1 - \lambda_n}(\frac{1}{\lambda_1}) - \frac{\lambda_1 - \lambda_i}{\lambda_1 - \lambda_n}(\frac{1}{\lambda_n})\right] \\ \\
+	&= \sum \xi_i \frac{\lambda_1 + \lambda_n - \lambda_i}{\lambda_1 \lambda_n}  \ \ \ \ \ \ \ \ \ \ \ \ \ (6) \\
+	\end{align*}
+	\noindent De hecho, se puede ver que el numerador $( f(\lambda) )$ siempre ser\'a menor o igual al denominador $(\sum \xi_i f(\lambda_i))$ por lo que para toda $\lambda_*$, su punto en la curva $(f(\lambda_*))$ ser\'a menor o igual a la combinaci\'on convenza de los puntos en la curva. $\therefore L.I. \ge \frac{1}{\lambda} * \frac{1}{\sum \xi_i f(\lambda_i)}	$. \\ 
+	\noindent Volviendo a la expresi\'on del L.I. se tiene la siguiente equivalencia: $$\frac{\frac{1}{\sum \xi_i \lambda_i}}{\sum \frac{\xi_i}{\lambda_i}}\ge \frac{\frac{1}{\lambda}}{\sum \xi_i f(\lambda_i)} = \frac{1}{\lambda}\frac{1}{\sum \xi_i f(\lambda_i)} \ . \ . \ . \ g(\lambda)$$
+	
+	\noindent Ya llegado a este punto, se intentar\'a minimizar la expresi\'on anterior (derivable) para terminar la demostraci\'on. 
+	
+	\begin{align*}
+		\frac{d}{d\lambda} g = 0 &{\iff} \frac{d}{d\lambda^*} \lambda^*(\lambda_1 + \lambda_n -\lambda^*)^{-1} = 0 \\ \\
+		&{\iff} \lambda_1 + \lambda_n -2\lambda^* = 0 \\ \\
+		&{\iff} \lambda^* = \frac{\lambda_1 + \lambda_n}{2} 
+	\end{align*}
+	
+	\noindent Revisando la segunda derivada(porque $\frac{d}{d\lambda}$ es derivable), se encuentra que: $$\frac{d^2}{d \lambda} g(\lambda^*) = 2 \lambda_1 \lambda_n \left[\frac{\lambda_1 + \lambda_n}{2}(\frac{\lambda_1 + \lambda_n}{2})\right]^{-2} > 0$$
+	\noindent $\therefore \lambda^*$ minimiza la funci\'on $g$\\ 
+	\noindent Es decir, 
+	\begin{align*}
+	 \frac{(y^Ty)^2}{(y^THy)(y^TH^{-1}y)} &= \frac{(\sum_{i=1}^n x_i^2)^2}{(\sum_{i=1}^n x_i^2 \lambda_i )(\sum_{i=1}^n\frac{x_i^2}{\lambda_i})} \\ \\
+	  &{\ge} \frac{1}{\lambda}\left(\frac{1}{\sum \frac{\xi_i}{\lambda_i}}\right) \\ \\
+	    &{\ge} \text{min} \frac{1}{\lambda(\frac{\lambda_1 + \lambda_n - \lambda}{\lambda_1 \lambda_n})} \\ \\ 
+	   &= \frac{\lambda_1 \lambda_n}{(\frac{\lambda_1 + \lambda_n}{2})(\lambda_1 + \lambda_n -(\frac{\lambda_1 + \lambda_n}{2}))} \\ \\
+	    &= \frac{4 \lambda_1 \lambda_n}{\lambda_1^2 + 2\lambda_1\lambda_n + \lambda_2^2} \\ \\
+	    &= \frac{4 \lambda_1 \lambda_n}{(\lambda_1 + \lambda_n)^2} \ \ \ \ \ \qed
+	 \end{align*}
+
+	\end{enumerate}	
+
+\enddocument

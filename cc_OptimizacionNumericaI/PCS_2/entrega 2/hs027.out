@@ -1,0 +1,16 @@
+ Nombre del problema                      hs027  
+ Numero de variables                       3 
+ Numero de restricciones                   1 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             4.010000000000000e+00 
+ Norma de las restricciones en el punto inicial              7.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.60e+01 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     1.22474088e-02     3.15e+00      7.27e-01   1.00e+00   9.42e-01  
+
+ inercia incorrecta
+ tiempo de programa :   1.27e-03

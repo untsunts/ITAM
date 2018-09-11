@@ -1,0 +1,13 @@
+ Nombre del problema                      hs100lnp  
+ Numero de variables                       7 
+ Numero de restricciones                   2 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             7.140000000000000e+02 
+ Norma de las restricciones en el punto inicial              1.30e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.10e+02 
+
+ inercia incorrecta  
+
+ tiempo de programa :   8.14e-04

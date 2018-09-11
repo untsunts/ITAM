@@ -1,0 +1,56 @@
+\documentclass[12pt]{article}
+\usepackage{latexsym}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{framed}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{caption}
+
+\setlength\parindent{24pt}
+\textwidth     =  6.5in
+\textheight    =  8.2in
+\oddsidemargin =  -0.2in
+\topmargin     = -0.4in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ul}{\underline}
+\begin{document}
+
+
+ \textbf{Supuesto:}
+ 
+ \[ \|G(x) - G(x^*)\| \leq L \| x - x^* \|\]
+ 
+ \[ \tilde{s_k} = G_{*}^{1/2}s_k, \quad \tilde{y_k} = G_{*}^{-1/2}y_k, \quad \tilde{B_k} = G_{*}^{-1/2} B_k G_{*}^{1/2},\]
+ 
+ \[ cos \tilde{\theta_k} = \frac{\tilde{s_k}^T \tilde{B_k} \tilde{s_k}}{\|\tilde{s_k}\| \|\tilde{B_k} \tilde{s_k}},\quad \tilde{q_k} = \frac{\tilde{s_k}^T \tilde{B_k} \tilde{s_k}}{\|\tilde{s_k}\|^2}\]
+ 
+ \[ \tilde{M_k} = \frac{\| \tilde{y_k} \|^2}{\tilde{y_k}^T \tilde{s_k}},\quad \tilde{m_k} = \frac{\tilde{y_k}^T \tilde{s_k} }{\tilde{s_k}^T \tilde{s_k}}.\]
+  
+\[ \tilde{B_{k+1}} = \tilde{B_{k}} - \frac{\tilde{B_{k}} \tilde{s_{k}} \tilde{s_{k}}^T \tilde{B_{k}}}{\tilde{s_{k}}^T \tilde{B_{k}} \tilde{s_{k}}} + \frac{\tilde{y_{k}} \tilde{y_{k}}^T }{\tilde{y_{k}}^T \tilde{s_{k}}}.\]
+
+\begin{eqnarray}  \label{6.53}
+\begin{split}
+\psi(\tilde{B_{k+1}}) & = \psi(\tilde{B_{k}} + (\tilde{M_{k+1}} - \ln(\tilde{m_{k}}) -1)\\
+& \quad + \left[ 1 - \frac{\tilde{q_k}}{cos^2 \tilde{\theta_k}} + \ln\left(\frac{\tilde{q_k}}{cos^2 \tilde{\theta_k}} \right) \right]\\
+& \quad + \ln\left(cos^2 \tilde{\theta_k} \right)\\
+\end{split}
+\end{eqnarray}
+
+\[ y_k - G_{*} s_k = (\tilde{G_k} - \tilde{G_{*}}) s_k,\]
+
+\[ \tilde{y_k} - \tilde{s_k} = G_{*}^{-1/2} (\tilde{G_k} - \tilde{G_{*}}) G_{*}^{-1/2} \tilde{s_k}.\]
+
+\[ \|\tilde{y_k} - \tilde{s_k}\| \leq \|G_{*}^{-1/2}\|^2 \|\tilde{s_k}\| \|\tilde{G_k} - \tilde{G_{*}}\| \leq \|G_{*}^{-1/2}\|^2 \|\tilde{s_k}\| L\epsilon_k,\]
+
+\[ \epsilon_k = max\{ \|x_{k+1} - x^*\|, \|x_{k} - x^*\|\}.\]
+
+\begin{eqnarray}  \label{6.54}
+\frac{\|\tilde{y_k} - \tilde{s_k}\|}{\| \tilde{s_k}\|} \leq \bar{c} \epsilon_k,
+\end{eqnarray}
+
+
+ 
+\end{document}

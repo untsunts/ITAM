@@ -1,0 +1,11 @@
+ Nombre del problema                      eigenbco  
+ Numero de variables                     110 
+ Numero de restricciones                  55 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             1.900000000000000e+01 
+ Norma de las restricciones en el punto inicial              0.00e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    6.32e+00 
+
+ inercia incorrecta  

@@ -1,0 +1,11 @@
+ Nombre del problema                      hs111lnp  
+ Numero de variables                      10 
+ Numero de restricciones                   3 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial            -2.101453947523903e+01 
+ Norma de las restricciones en el punto inicial              1.30e+00 
+ Norma del gradiente de la Lagrangiana en el punto inicial    7.23e-01 
+
+ inercia incorrecta  

@@ -1,0 +1,13 @@
+ Nombre del problema                      hs007  
+ Numero de variables                       2 
+ Numero de restricciones                   1 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial            -3.905620875658997e-01 
+ Norma de las restricciones en el punto inicial              2.50e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.28e+00 
+
+ inercia incorrecta  
+
+ tiempo de programa :   5.99e-04

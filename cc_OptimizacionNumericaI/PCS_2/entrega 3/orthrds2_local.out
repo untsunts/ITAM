@@ -1,0 +1,18 @@
+ Nombre del problema                      orthrds2  
+ Numero de variables                     203 
+ Numero de restricciones                 100 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             0.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              4.67e+02 
+ Norma del gradiente de la Lagrangiana en el punto inicial    0.00e+00 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     2.74658078e+01     1.56e+03      6.16e+02    
+    2     1.52711970e+02     5.51e+02      4.70e+02    
+    3     3.58343937e+02     1.96e+02      9.13e+01    
+
+ inercia incorrecta
+ tiempo de programa :   7.99e-03

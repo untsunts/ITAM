@@ -1,0 +1,147 @@
+
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+
+\textwidth     =  6.5in
+\textheight    =  9.0in
+\oddsidemargin =  0.2in
+\topmargin     = -0.5in
+\usepackage{amsmath, amssymb, latexsym}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}}
+
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+
+\newcommand{\bet}{\begin{tabular}}
+\newcommand{\ent}{\end{tabular}}
+\newcommand{\mul}{\multicolumn}
+\newcommand{\bec}{\begin{center}}
+\newcommand{\enc}{\end{center}}
+\newcommand{\noi}{\noindent}
+\newcommand{\unl}{\underline}
+\newcommand{\ul}{\underline}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\feal}{\mathbb{F}}
+\newcommand{\natu}{\mathbb{N}}
+\newcommand{\fact}{\mathbb{X}}
+
+\begin{document}
+
+\title{Optimizaci\'on num\'erica}
+\author{Proyecto 1. Precondicionamiento}
+\date{Instructor Jos\'e Luis Morales. Oto\~no, 2015}
+\maketitle
+
+
+\subsubsection*{Gradiente conjugado precondicionado}
+ El m\'etodo de gradiente conjugado (GC) pertenece a la familia de algoritmos basados en subespacios de Krylov; el m\'etodo est\'a dise\~nado para resolver sistemas de ecuaciones lineales de la forma
+ \begin{eqnarray} \label{noprec}
+      Ax = b,
+ \end{eqnarray}
+  en donde $A$ es una matriz sim\'etrica positiva definida de $n \times n$. En aritm\'etica exacta GC termina en no m\'as de $n$ iteraciones. Sin embargo, en aritm\'etica de punto flotante, GC es considerado un m\'etodo iterativo.
+ 
+  Las aplicaciones en las que el GC es particularmente vers\'atil y efectivo son aquellas en las que $n$ est\'a en el orden de las decenas o cientos de miles y $A$ es rala (t\'{\i}picamente con un n\'umero de entradas diferentes de cero de orden lineal en $n$); en estos casos la soluci\'on se alcanza en un n\'umero de iteraciones sustancialmente menor que $n$.
+  
+  Por otra parte, se sabe que la  eficiencia del m\'etodo es sensible a la distribuci\'on de valores propios de $A$; en t\'erminos pr\'acticos el n\'umero de iteraciones es aproximadamente igual al n\'umero de c\'umulos de valores propios de $A$. Una estrategia muy popular para disminuir el n\'umero de c\'umulos es el uso de precondicionadores. 
+  
+ El principio mediante el cual funciona un precondicionador es relativamente simple. Si el sistema por resolver es (\ref{noprec}), un precondicionador es una matriz $M$ sim\'etrica positiva definida cuya inversa aproxima a la inversa de $A$. Por lo tanto, se espera que la matriz del  sistema {\em precondicionado}
+ \begin{eqnarray} \label{prec}
+          M^{-1} A x = M^{-1}b 
+ \end{eqnarray}
+ tenga una distribuci\'on de valores propios m\'as favorable que la de $A$ y que GC aplicado al sistema anterior termine en menos iteraciones que las que requiere para resolver el sistema original (\ref{noprec}). Tambi\'en se espera que el costo computacional compense en mucho la inversi\'on en al elecci\'on y construcci\'on de $M$.
+ 
+ En el proyecto vamos a utilizar una forma ligeramente diferente para construir un precondicionador. Supondremos que $M = C^TC$, con $C$ invertible, por lo tanto $M$ es sim\'etrica positiva definida. Las siguientes definiciones 
+ \[
+     \bar{x} = Cx, \quad   \bar{A} = C^{-T}AC^{-1}, \quad \bar{b} = C^{-T}b
+ \]
+ establecen el sistema precondicionado 
+ \[
+    \bar{A} \bar{x} = \bar{ b}.
+ \]
+ al cual aplicaremos el m\'etodo de GC. El algoritmo resultante es
+ 
+\begin{quotation}
+\begin{description}
+ \item 
+ \item {\bf Gradiente conjugado precondicionado (GCP) }  
+ \item
+ \item Escoger $x_0$, una aproximaci\'on inicial; \quad  $r_0 \leftarrow Ax_0 - b$, 
+ \item $y_0 \leftarrow M^{-1}r_0$, \quad  $p_0 \leftarrow -y_0$,  \quad $k \leftarrow 0$.
+ \item Repetir mientras $||r_k|| > TOL$
+  \begin{description}
+    \item $\displaystyle \alpha_k  \quad = \, \frac{r_k^Ty_k}{d_k^TAd_k}$
+    \item  $x_{k+1} = \, x_k + \alpha_k p_k$
+    \item $r_{k+1}  = \, r_k + \alpha_k Ap_k$
+    \item $y_{k+1} = M^{-1}r_{k+1}$
+    \item $\displaystyle \beta_{k+1} = \, \frac{r_{k+1}^Ty_{k+1}}{r_k^Ty_k}$
+    \item $p_{k+1} = \, -y_{k+1} + \beta_{k+1}p_k$
+    \item $k \leftarrow k + 1$
+  \end{description}
+\end{description}
+\end{quotation}
+
+Las factorizaciones incompletas de $A$ son probablemente los precondicionadores m\'as populares y vers\'atiles en diversas aplicaciones. En el proyecto vamos a utilizar factorizaciones incompletas de Cholesky de $A$,  es decir que $M = LL^T$. Observar que en el algoritmo anterior el c\'alculo $y_k = M^{-1}r_k$ equivale a resolver el sistema
+\begin{eqnarray}  \label{res}
+    LL^T y_k = r_k
+\end{eqnarray}
+una vez por cada iteraci\'on; al vector $y_{k}$ se le conoce como el {\em residuo precondicionado}. El costo por iteraci\'on de GCP, con respecto a GC, se incrementa en un vector de memoria para almacenar $y_k$ y el requerido para resolver el sistema (\ref{res}).
+
+\subsubsection*{Proyecto} 
+ El objetivo del proyecto es verificar experimentalmente las propiedades computacionales de GCP. El ambiente computacional es  {\sc Matlab}; con ciertas limitaciones, el proyecto se puede realizar en otros ambientes como {\sc Octave}, {\sc Scilab}, 
+ {\sc Python}, $\ldots$
+ 
+ 
+ 
+ \subsubsection*{Actividades}
+
+  \begin{enumerate}
+   \item Escribir una versi\'on computacional de GC. Fijar la condici\'on de paro como
+         \[
+               ||r_k||_2 \le ||r_0||_2 \,TOL, \quad TOL = 1 \times 10^{-8}.
+         \]
+   \item Comparar la versi\'on de GC con el comando {\tt pcg}. Utilizar matrices sim\'etricas positivas 
+         definidas de la colecci\'on {\tt gallery}, por ejemplo {\tt lehmer, moler, poisson, toeppd}.
+   \item Modificar GC para aceptar precondicionamiento. Los precondicionadores se pueden obtener llamando al comando
+         {\tt ichol}. El comando {\tt ichol} construye diferentes variantes de factorizaciones incompletas de Cholesky. Utilizar la versi\'on m\'as simple {\tt L = ichol(A)}  y la modificaci\'on conocida como {\em modified incomplete Cholesky}, accesible con la opci\'on {\tt michol = 'on'}.
+   \item Comparar el tiempo de CPU requerido para resolver $Ax = b$ mediante
+   
+         \medskip
+   
+         \centerline{  GC  \qquad GCP \qquad  {\tt pcg}  \qquad  {\tt chol} }
+         
+         \medskip
+   
+         En donde {\tt chol} se refiere a la factorizaci\'on de Cholesky. Es decir que compararemos el desempe\~no de un 
+         m\'etodo directo con diversas variantes del m\'etodo de gradiente conjugado precondicionado.
+         
+          Utilizar  matrices ralas {\tt poisson} y  {\tt toeppd} de dimensi\'on variable. Fijar la tolerancia para la condici\'on de paro como $TOL = 1 \times 10^{-8}$. Utilizar $x_0 = [0, \ldots, 0]^T$ como punto inicial. Generar los lados derechos $b$ mediante el siguiente comando {\tt b = A*ones(n,1)}.
+         
+   \item Escribir el reporte t\'ecnico.
+   
+   \end{enumerate}
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}  

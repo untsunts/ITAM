@@ -1,0 +1,33 @@
+ Nombre del problema                      hs077  
+ Numero de variables                       5 
+ Numero de restricciones                   2 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             4.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              5.66e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    7.75e+00 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1     1.27675620e+00     1.69e+01      2.14e+00    
+    2     5.38857243e-01     4.03e+00      7.24e-01    
+    3     3.50748112e-01     5.08e-01      2.76e-01    
+    4     3.00050728e-01     1.07e-02      1.40e-01    
+    5     2.45891538e-01     2.30e-02      7.04e-02    
+    6     2.61433347e-01     3.15e-02      3.21e-01    
+    7     2.44505271e-01     2.75e-03      9.09e-02    
+    8     2.41605556e-01     1.07e-03      1.86e-02    
+    9     2.41496879e-01     1.10e-04      1.49e-03    
+   10     2.41505045e-01     9.53e-07      1.19e-05    
+   11     2.41505129e-01     6.32e-11      7.87e-10    
+
+
+ Minimizador local del modelo: 
+ 	   1.16617219e+00 
+ 	   1.38025704e+00 
+ 	   1.50603627e+00 
+ 	   6.10920195e-01 
+ 	   1.18211139e+00 
+
+ tiempo de programa :   2.44e-03

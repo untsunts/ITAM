@@ -1,0 +1,17 @@
+ Nombre del problema                      orthrega  
+ Numero de variables                     517 
+ Numero de restricciones                 256 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial             0.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              3.67e+02 
+ Norma del gradiente de la Lagrangiana en el punto inicial    0.00e+00 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1     1.63936242e-01     9.20e-01      1.64e-01   1.00e+00   5.96e-04  
+    2     5.92367328e+02     4.88e-01      1.26e+05   5.00e-01   2.82e+03  
+
+ inercia incorrecta
+ tiempo de programa :   2.96e-02

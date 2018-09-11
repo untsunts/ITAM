@@ -1,0 +1,16 @@
+ Nombre del problema                      bt9  
+ Numero de variables                       4 
+ Numero de restricciones                   2 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial            -2.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              1.00e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    1.00e+00 
+
+   k          f              ||c||          ||gL||      
+--------------------------------------------------------- 
+    1    -4.03480715e+00     1.01e+02      5.15e+00    
+
+ inercia incorrecta
+ tiempo de programa :   9.24e-04

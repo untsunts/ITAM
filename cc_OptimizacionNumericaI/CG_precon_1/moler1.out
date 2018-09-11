@@ -1,0 +1,13 @@
+
+ Guillermo Santiago Novoa P?rez
+ Nombre del problema                      moler  
+ Numero maximo de iteraciones             1000 
+ Tolerancia                               1.00e-07 
+
+
+
+                                  GC                      pcg    
+
+|     n    |  nombre  |    tiempo       iter   |    tiempo       iter   |
+---------------------------------------------------------------------------
+|   10000  |   moler  | 4.12618732e+00    69   | 5.42190334e+00    69   |

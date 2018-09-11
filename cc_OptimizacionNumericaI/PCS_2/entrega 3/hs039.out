@@ -1,0 +1,16 @@
+ Nombre del problema                      hs039  
+ Numero de variables                       4 
+ Numero de restricciones                   2 
+ Numero maximo de iteraciones              50 
+ Tolerancia                               1.00e-05 
+
+ Objetivo en el punto inicial            -2.000000000000000e+00 
+ Norma de las restricciones en el punto inicial              1.00e+01 
+ Norma del gradiente de la Lagrangiana en el punto inicial    3.14e-01 
+
+   k         f             ||c||      ||gL||     alpha        mu     
+-----------------------------------------------------------------------
+    1    -3.01740357e+00     2.41e+01      1.01e+00   5.00e-01   6.87e-02  
+
+ inercia incorrecta
+ tiempo de programa :   1.82e-03
